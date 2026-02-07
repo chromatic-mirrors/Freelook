@@ -1,9 +1,6 @@
-## Freelook
-Allows you to freely look around!
+# --- UNDER CONSTRUCTION ---
 
-### Usage
-`/freelook` to open oneconfig gui.
+## Freelook
+Allows you to rotate your camera freely around your character!
 
 ---
-
-##### Code licensed under [LGPL](LICENSE).

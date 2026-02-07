@@ -1,7 +1,5 @@
 package com.github.chromaticforge.freelook.client
 
-import com.github.chromaticforge.freelook.client.config.FreelookConfig
-
 object CameraCycleHandler {
     var hasCycledFreelook = false
 
@@ -18,10 +16,7 @@ object CameraCycleHandler {
             if (hasCycledFreelook) {
                 hasCycledFreelook = false
                 FreelookController.stop()
-            } else if (
-                PerspectiveManager.getCurrentPerspective() ==
-                PerspectiveManager.getMaximumPerspectiveIndex()
-            ) {
+            } else if (PerspectiveManager.getCurrentPerspective() == PerspectiveManager.getMaximumPerspectiveIndex()) {
                 FreelookController.start()
                 hasCycledFreelook = true
                 return false

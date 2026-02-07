@@ -1,11 +1,8 @@
 package com.github.chromaticforge.freelook.client
 
-import com.github.chromaticforge.freelook.client.config.FreelookConfig
-import dev.deftu.omnicore.client.OmniClient
-import dev.deftu.omnicore.client.OmniClientPlayer
+import com.github.chromaticforge.freelook.FreelookMod
+import net.minecraft.client.MinecraftClient
 import net.minecraft.util.math.MathHelper
-import org.polyfrost.polyui.animate.Animation
-import org.polyfrost.polyui.animate.Easing
 
 object FreelookController {
     @JvmField
@@ -13,7 +10,25 @@ object FreelookController {
     private var lastPerspective: Int = 0
     private var pressStartTime: Long = 0
     private var lastUpdateTime: Long = 0
-    private val timer: Animation = Easing.Expo(Easing.Type.Out, 650L, 0.0f, 1.0f)
+    private val timer = EaseInExpoTimer(650L)
+
+    fun tick() {
+        val key = FreelookMod.key
+
+        if (FreelookConfig.Activation.pressMode == 1) {
+            handlePressAndHold(key.isPressed)
+        } else if (FreelookConfig.Activation.pressMode == 2) {
+            if (key.wasPressed()) {
+                toggle()
+            }
+        } else {
+            if (key.isPressed && !perspectiveToggled) {
+                start()
+            } else if (!key.isPressed && perspectiveToggled) {
+                stop()
+            }
+        }
+    }
 
     fun handlePressAndHold(pressed: Boolean) {
         if (pressed && pressStartTime == 0L) {
@@ -50,20 +65,22 @@ object FreelookController {
             1 -> if (lastPerspective == 0) {
                 PerspectiveManager.setPerspective(perspective)
             }
+
             2 -> if (lastPerspective != 0) {
                 PerspectiveManager.setPerspective(perspective)
             }
+
             3 -> PerspectiveManager.setPerspective(perspective)
         }
 
         if (FreelookConfig.smoothCamera) {
-            timer.reset()
+            timer.start()
             lastUpdateTime = System.currentTimeMillis()
         }
 
-        val player = OmniClient.getInstance().player
-        CameraStateTracker.setCameraYaw(player, OmniClientPlayer.yaw)
-        CameraStateTracker.setCameraPitch(player, OmniClientPlayer.pitch)
+        val player = MinecraftClient.getInstance().player!!
+        CameraStateTracker.setCameraYaw(player, player.yaw)
+        CameraStateTracker.setCameraPitch(player, player.pitch)
 
         perspectiveToggled = true
     }
@@ -71,22 +88,19 @@ object FreelookController {
     fun stop() {
         perspectiveToggled = false
         PerspectiveManager.setPerspective(lastPerspective)
-        timer.finishNow()
-        //#if MC <= 1.12.2
-        //$$ OmniClient.getInstance().renderGlobal.setDisplayListEntitiesDirty()
-        //#endif
+        timer.stop()
     }
 
     fun applySmoothScale(z: Float): Float {
-        if (!perspectiveToggled || timer.isFinished || !FreelookConfig.smoothCamera) {
+        if (!perspectiveToggled || timer.complete || !FreelookConfig.smoothCamera) {
             return z
         }
 
         val currentTime = System.currentTimeMillis()
-        val delta = currentTime - lastUpdateTime
+        currentTime - lastUpdateTime
         lastUpdateTime = currentTime
-        timer.update(delta)
-        val transitionProgress = timer.value
+
+        val transitionProgress = timer.currentProgress
         val scale = 0.125f + transitionProgress * (1.0f - 0.125f)
         return z * scale
     }
@@ -95,13 +109,11 @@ object FreelookController {
         currentValue: Float,
         delta: Float,
         invert: Boolean,
-        lock: Boolean,
-        min: Float,
-        max: Float
+        lock: Boolean
     ): Float {
         val adjustedDelta = if (invert) -delta else delta
         return if (lock) {
-            MathHelper.clamp(currentValue + adjustedDelta, min, max)
+            MathHelper.clamp(currentValue + adjustedDelta, -90.0F, 90.0F)
         } else {
             currentValue + adjustedDelta
         }

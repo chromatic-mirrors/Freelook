@@ -1,44 +1,30 @@
-@file:Suppress("UnstableApiUsage", "PropertyName")
-
-import dev.deftu.gradle.utils.GameSide
-
 plugins {
     java
-    kotlin("jvm")
-    id("dev.deftu.gradle.multiversion")
-    id("dev.deftu.gradle.tools")
-    id("dev.deftu.gradle.tools.resources")
-    id("dev.deftu.gradle.tools.bloom")
-    id("dev.deftu.gradle.tools.shadow")
-    id("dev.deftu.gradle.tools.minecraft.loom")
-    id("dev.deftu.gradle.tools.minecraft.releases")
+    kotlin("jvm") version ("2.3.10")
+    id("net.fabricmc.fabric-loom-remap") version ("1.15-SNAPSHOT")
 }
 
-toolkitLoomHelper {
-    useOneConfig {
-        version = "1.0.0-alpha.+"
-        loaderVersion = "1.1.0-alpha.+"
+group = "org.codeberg.chromatic"
+version = "2.0.0-alpha.1"
 
-        usePolyMixin = true
-        polyMixinVersion = "0.8.4+build.+"
+repositories {
+    maven("https://maven.isxander.dev/releases")
+    maven("https://maven.terraformersmc.com")
+}
 
-        applyLoaderTweaker = true
+dependencies {
+    minecraft("com.mojang:minecraft:1.21.5")
+    mappings("net.fabricmc:yarn:1.21.5+build.1:v2")
+    modImplementation("net.fabricmc:fabric-loader:0.18.4")
+    modImplementation("dev.isxander:yet-another-config-lib:3.8.2+1.21.5-fabric")
+    modImplementation("com.terraformersmc:modmenu:14.0.1")
+}
 
-        for (module in arrayOf("commands", "config", "config-impl", "events", "internal", "ui", "utils")) {
-            +module
-        }
-    }
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 
-    useDevAuth("1.2.1")
-    useMixinExtras("0.4.1")
-
-    disableRunConfigs(GameSide.SERVER)
-
-    if (!mcData.isNeoForge) {
-        useMixinRefMap(modData.id)
-    }
-
-    if (mcData.isForge) {
-        useForgeMixin(modData.id)
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }

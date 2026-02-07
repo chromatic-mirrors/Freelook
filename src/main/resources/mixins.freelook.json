@@ -1,12 +1,10 @@
 {
-  "compatibilityLevel": "${java_version}",
+  "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "package": "com.github.chromaticforge.freelook.client.mixin",
-  "refmap": "mixins.${mod_id}.refmap.json",
   "client": [
-    "Mixin_Camera_Rotation",
-    "Mixin_Entity_CameraOverride",
-    "Mixin_EntityRenderer",
-    "Mixin_MinecraftClient_CameraCycle"
+    "MixinCamera",
+    "MixinEntity",
+    "MixinMinecraftClient"
   ]
 }
