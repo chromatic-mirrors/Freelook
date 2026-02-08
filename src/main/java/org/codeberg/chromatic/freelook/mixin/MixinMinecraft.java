@@ -27,7 +27,7 @@ public class MixinMinecraft {
     @Inject(
             method = "tick", at = @At("TAIL")
     )
-    private void meow(CallbackInfo ci) {
+    private void tickFreelookHandler(CallbackInfo ci) {
         FreelookHandler.INSTANCE.tick();
     }
 }

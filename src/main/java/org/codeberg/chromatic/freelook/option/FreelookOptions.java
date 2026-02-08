@@ -1,31 +1,6 @@
 package org.codeberg.chromatic.freelook.option;
 
 public class FreelookOptions {
-    public enum ChangePerspective {
-        NEVER,
-        FIRST_PERSON_ONLY,
-        THIRD_PERSON_ONLY,
-        ALWAYS
-    }
-
-    public enum PerspectiveMode {
-        FIRST_PERSON,
-        THIRD_PERSON,
-        THIRD_PERSON_REVERSED
-    }
-
-    public enum PressMode {
-        HOLD,
-        QUICK_PRESS,
-        TOGGLE
-    }
-
-    public enum CycleChangeAction {
-        CHANGE_AND_FREELOOK,
-        STOP_FREELOOK,
-        BLOCK_PERSPECTIVE_CHANGE
-    }
-
     // "Which perspective should make Freelook/Snaplook start in a different perspective"
     public static ChangePerspective changePerspective = ChangePerspective.FIRST_PERSON_ONLY;
 
@@ -63,4 +38,29 @@ public class FreelookOptions {
 
     // "Use a vanilla perspective instead."
     public static boolean snaplook = false;
+
+    public enum ChangePerspective {
+        NEVER,
+        FIRST_PERSON_ONLY,
+        THIRD_PERSON_ONLY,
+        ALWAYS
+    }
+
+    public enum PerspectiveMode {
+        FIRST_PERSON,
+        THIRD_PERSON,
+        THIRD_PERSON_REVERSED
+    }
+
+    public enum PressMode {
+        HOLD,
+        QUICK_PRESS,
+        TOGGLE
+    }
+
+    public enum CycleChangeAction {
+        CHANGE_AND_FREELOOK,
+        STOP_FREELOOK,
+        BLOCK_PERSPECTIVE_CHANGE
+    }
 }

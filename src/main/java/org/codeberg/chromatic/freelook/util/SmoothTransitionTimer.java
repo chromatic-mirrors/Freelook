@@ -9,14 +9,6 @@ public class SmoothTransitionTimer {
         this.durationMs = durationMs;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
     public boolean isComplete() {
         return getTimeRemaining() <= 0L && active;
     }

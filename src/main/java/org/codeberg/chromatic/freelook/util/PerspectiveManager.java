@@ -12,19 +12,8 @@ public class PerspectiveManager {
         return Minecraft.getInstance().options.getCameraType();
     }
 
-    public static int getCurrentPerspectiveIndex() {
-        return getCurrentPerspective().ordinal();
-    }
-
     public static CameraType getLastPerspectiveType() {
         CameraType[] values = CameraType.values();
         return values[values.length - 1];
-    }
-
-    /**
-     * @return The maximum perspective index
-     */
-    public static int getMaximumPerspectiveIndex() {
-        return CameraType.values().length - 1;
     }
 }

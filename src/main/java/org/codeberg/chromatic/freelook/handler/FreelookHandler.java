@@ -2,7 +2,7 @@ package org.codeberg.chromatic.freelook.handler;
 
 import org.codeberg.chromatic.freelook.Freelook;
 import org.codeberg.chromatic.freelook.option.FreelookOptions;
-import org.codeberg.chromatic.freelook.util.CameraStateTracker;
+import org.codeberg.chromatic.freelook.util.CameraStateHandler;
 import org.codeberg.chromatic.freelook.util.PerspectiveManager;
 import org.codeberg.chromatic.freelook.util.SmoothTransitionTimer;
 import net.minecraft.client.KeyMapping;
@@ -18,8 +18,6 @@ public class FreelookHandler {
     private CameraType lastPerspective = CameraType.FIRST_PERSON;
     private long pressStartTime = 0;
     private final SmoothTransitionTimer timer = new SmoothTransitionTimer(650L);
-
-    private FreelookHandler() {}
 
     public void tick() {
         KeyMapping key = Freelook.key;
@@ -94,8 +92,9 @@ public class FreelookHandler {
 
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
-            CameraStateTracker.setCameraYaw(player, player.getXRot());
-            CameraStateTracker.setCameraPitch(player, player.getYRot());
+            CameraStateHandler handler = (CameraStateHandler) player;
+            handler.freelook$setPitch(player.getXRot());
+            handler.freelook$setYaw(player.getYRot());
         }
 
         perspectiveToggled = true;
