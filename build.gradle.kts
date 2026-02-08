@@ -1,7 +1,7 @@
 plugins {
     java
     kotlin("jvm") version ("2.3.10")
-    id("net.fabricmc.fabric-loom-remap") version ("1.15-SNAPSHOT")
+    id("net.fabricmc.fabric-loom") version ("1.15-SNAPSHOT")
 }
 
 group = "org.codeberg.chromatic"
@@ -13,18 +13,18 @@ repositories {
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:1.21.5")
-    mappings("net.fabricmc:yarn:1.21.5+build.1:v2")
-    modImplementation("net.fabricmc:fabric-loader:0.18.4")
-    modImplementation("dev.isxander:yet-another-config-lib:3.8.2+1.21.5-fabric")
-    modImplementation("com.terraformersmc:modmenu:14.0.1")
+    minecraft("com.mojang:minecraft:26.1-snapshot-2")
+    implementation("net.fabricmc:fabric-loader:0.18.4")
+
+    implementation("dev.isxander:yet-another-config-lib:3.8.2+26.1.0-fabric")
+    implementation("com.terraformersmc:modmenu:18.0.0-alpha.4")
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
+        languageVersion.set(JavaLanguageVersion.of(25))
     }
 }

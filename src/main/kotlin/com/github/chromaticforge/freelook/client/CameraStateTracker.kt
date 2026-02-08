@@ -1,6 +1,6 @@
 package com.github.chromaticforge.freelook.client
 
-import net.minecraft.entity.Entity
+import net.minecraft.world.entity.Entity
 
 object CameraStateTracker {
     private val pitchMap = mutableMapOf<Entity, Float>()

@@ -1,16 +1,16 @@
 package com.github.chromaticforge.freelook
 
 import net.fabricmc.api.ClientModInitializer
-import net.fabricmc.fabric.impl.client.keybinding.KeyBindingRegistryImpl
-import net.minecraft.client.option.KeyBinding
+import net.fabricmc.fabric.impl.client.keymapping.KeyMappingRegistryImpl
+import net.minecraft.client.KeyMapping
 import org.lwjgl.glfw.GLFW
 
 object FreelookMod : ClientModInitializer {
 
-    var key = KeyBinding("freelook.key.activation", GLFW.GLFW_KEY_V, "key.categories.misc")
+    var key = KeyMapping("freelook.key.activation", GLFW.GLFW_KEY_V, KeyMapping.Category.MISC)
 
     override fun onInitializeClient() {
-        KeyBindingRegistryImpl.registerKeyBinding(key)
+        KeyMappingRegistryImpl.registerKeyMapping(key)
     }
 
 }

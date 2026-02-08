@@ -1,11 +1,11 @@
-package com.github.chromaticforge.freelook.client.mixin;
+package org.codeberg.chromatic.freelook.mixins;
 
 import com.github.chromaticforge.freelook.client.CameraStateTracker;
 import com.github.chromaticforge.freelook.client.FreelookController;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.Camera;
+import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
@@ -15,17 +15,17 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 public abstract class MixinCamera {
 
     @ModifyArgs(
-            method = "update",
+            method = "setup",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/render/Camera;setRotation(FF)V",
+                    target = "Lnet/minecraft/client/Camera;setRotation(FF)V",
                     ordinal = 1
             )
     )
     private void modifyRotationArgs(Args args) {
-        ClientPlayerEntity focused = MinecraftClient.getInstance().player;
+        LocalPlayer focused = Minecraft.getInstance().player;
 
-        if (FreelookController.perspectiveToggled && focused instanceof ClientPlayerEntity) {
+        if (FreelookController.perspectiveToggled && focused instanceof LocalPlayer) {
             CameraStateTracker tracker = CameraStateTracker.INSTANCE;
 
             args.set(0, tracker.getCameraYaw(focused));
@@ -33,7 +33,7 @@ public abstract class MixinCamera {
         }
     }
 
-    @ModifyReturnValue(method = "clipToSpace", at = @At("RETURN"))
+    @ModifyReturnValue(method = "getMaxZoom", at = @At("RETURN"))
     private float adjustClipReturn(float original) {
         return FreelookController.INSTANCE.applySmoothScale(original);
     }

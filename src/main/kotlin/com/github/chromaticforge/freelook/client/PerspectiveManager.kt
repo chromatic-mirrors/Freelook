@@ -1,15 +1,15 @@
 package com.github.chromaticforge.freelook.client
 
-import net.minecraft.client.MinecraftClient
-import net.minecraft.client.option.Perspective
+import net.minecraft.client.CameraType
+import net.minecraft.client.Minecraft
 
 object PerspectiveManager {
     fun setPerspective(perspective: Int) {
-        MinecraftClient.getInstance().options.perspective = Perspective.entries[perspective]
+        Minecraft.getInstance().options.cameraType = CameraType.entries[perspective]
     }
 
     fun getCurrentPerspective(): Int {
-        val perspective = MinecraftClient.getInstance().options.perspective
+        val perspective = Minecraft.getInstance().options.cameraType
         return perspective.ordinal
     }
 
@@ -17,6 +17,6 @@ object PerspectiveManager {
      * @return The maximum perspective index
      */
     fun getMaximumPerspectiveIndex(): Int {
-        return Perspective.entries.size - 1
+        return CameraType.entries.size - 1
     }
 }

@@ -1,8 +1,8 @@
 package com.github.chromaticforge.freelook.client
 
 import com.github.chromaticforge.freelook.FreelookMod
-import net.minecraft.client.MinecraftClient
-import net.minecraft.util.math.MathHelper
+import net.minecraft.client.Minecraft
+import net.minecraft.util.Mth
 
 object FreelookController {
     @JvmField
@@ -16,15 +16,15 @@ object FreelookController {
         val key = FreelookMod.key
 
         if (FreelookConfig.Activation.pressMode == 1) {
-            handlePressAndHold(key.isPressed)
+            handlePressAndHold(key.isDown)
         } else if (FreelookConfig.Activation.pressMode == 2) {
-            if (key.wasPressed()) {
+            if (key.consumeClick()) {
                 toggle()
             }
         } else {
-            if (key.isPressed && !perspectiveToggled) {
+            if (key.isDown && !perspectiveToggled) {
                 start()
-            } else if (!key.isPressed && perspectiveToggled) {
+            } else if (!key.isDown && perspectiveToggled) {
                 stop()
             }
         }
@@ -78,9 +78,9 @@ object FreelookController {
             lastUpdateTime = System.currentTimeMillis()
         }
 
-        val player = MinecraftClient.getInstance().player!!
-        CameraStateTracker.setCameraYaw(player, player.yaw)
-        CameraStateTracker.setCameraPitch(player, player.pitch)
+        val player = Minecraft.getInstance().player!!
+        CameraStateTracker.setCameraYaw(player, player.xRot)
+        CameraStateTracker.setCameraPitch(player, player.yRot)
 
         perspectiveToggled = true
     }
@@ -113,7 +113,7 @@ object FreelookController {
     ): Float {
         val adjustedDelta = if (invert) -delta else delta
         return if (lock) {
-            MathHelper.clamp(currentValue + adjustedDelta, -90.0F, 90.0F)
+            Mth.clamp(currentValue + adjustedDelta, -90.0F, 90.0F)
         } else {
             currentValue + adjustedDelta
         }
