@@ -1,6 +1,5 @@
 plugins {
     java
-    kotlin("jvm") version ("2.3.10")
     id("net.fabricmc.fabric-loom") version ("1.15-SNAPSHOT")
 }
 

@@ -19,10 +19,7 @@
     "environment": "client",
     "entrypoints": {
         "client": [
-            {
-                "adapter": "kotlin",
-                "value": "com.github.chromaticforge.freelook.FreelookMod"
-            }
+            "org.codeberg.chromatic.freelook.Freelook"
         ]
     },
     "mixins": [

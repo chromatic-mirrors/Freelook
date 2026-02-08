@@ -1,7 +1,7 @@
-package org.codeberg.chromatic.freelook.mixins;
+package org.codeberg.chromatic.freelook.mixin;
 
-import com.github.chromaticforge.freelook.client.CameraStateTracker;
-import com.github.chromaticforge.freelook.client.FreelookController;
+import org.codeberg.chromatic.freelook.handler.FreelookHandler;
+import org.codeberg.chromatic.freelook.util.CameraStateTracker;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -25,16 +25,14 @@ public abstract class MixinCamera {
     private void modifyRotationArgs(Args args) {
         LocalPlayer focused = Minecraft.getInstance().player;
 
-        if (FreelookController.perspectiveToggled && focused instanceof LocalPlayer) {
-            CameraStateTracker tracker = CameraStateTracker.INSTANCE;
-
-            args.set(0, tracker.getCameraYaw(focused));
-            args.set(1, tracker.getCameraPitch(focused));
+        if (FreelookHandler.INSTANCE.perspectiveToggled && focused instanceof LocalPlayer) {
+            args.set(0, CameraStateTracker.getCameraYaw(focused));
+            args.set(1, CameraStateTracker.getCameraPitch(focused));
         }
     }
 
     @ModifyReturnValue(method = "getMaxZoom", at = @At("RETURN"))
     private float adjustClipReturn(float original) {
-        return FreelookController.INSTANCE.applySmoothScale(original);
+        return FreelookHandler.INSTANCE.applySmoothScale(original);
     }
 }

@@ -1,7 +1,7 @@
-package org.codeberg.chromatic.freelook.mixins;
+package org.codeberg.chromatic.freelook.mixin;
 
-import com.github.chromaticforge.freelook.client.CameraCycleHandler;
-import com.github.chromaticforge.freelook.client.FreelookController;
+import org.codeberg.chromatic.freelook.handler.CameraCycleHandler;
+import org.codeberg.chromatic.freelook.handler.FreelookHandler;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -28,6 +28,6 @@ public class MixinMinecraft {
             method = "tick", at = @At("TAIL")
     )
     private void meow(CallbackInfo ci) {
-        FreelookController.INSTANCE.tick();
+        FreelookHandler.INSTANCE.tick();
     }
 }
