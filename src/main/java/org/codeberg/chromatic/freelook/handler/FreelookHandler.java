@@ -1,8 +1,7 @@
 package org.codeberg.chromatic.freelook.handler;
 
-import org.codeberg.chromatic.freelook.Freelook;
 import org.codeberg.chromatic.freelook.option.FreelookOptions;
-import org.codeberg.chromatic.freelook.util.CameraStateHandler;
+import org.codeberg.chromatic.freelook.util.CameraStateTracker;
 import org.codeberg.chromatic.freelook.util.PerspectiveManager;
 import org.codeberg.chromatic.freelook.util.SmoothTransitionTimer;
 import net.minecraft.client.KeyMapping;
@@ -19,20 +18,18 @@ public class FreelookHandler {
     private long pressStartTime = 0;
     private final SmoothTransitionTimer timer = new SmoothTransitionTimer(650L);
 
-    public void tick() {
-        KeyMapping key = Freelook.key;
-
-        if (FreelookOptions.Activation.pressMode == FreelookOptions.PressMode.QUICK_PRESS) {
-            handlePressAndHold(key.isDown());
-        } else if (FreelookOptions.Activation.pressMode == FreelookOptions.PressMode.TOGGLE) {
-            if (key.consumeClick()) {
-                toggle();
+    public void tick(KeyMapping key) {
+        switch (FreelookOptions.pressMode) {
+            case QUICK_PRESS -> handlePressAndHold(key.isDown());
+            case TOGGLE -> {
+                if (key.consumeClick()) toggle();
             }
-        } else {
-            if (key.isDown() && !perspectiveToggled) {
-                start();
-            } else if (!key.isDown() && perspectiveToggled) {
-                stop();
+            case HOLD -> {
+                if (key.isDown()) {
+                    start();
+                } else {
+                    stop();
+                }
             }
         }
     }
@@ -45,7 +42,7 @@ public class FreelookHandler {
             long pressDuration = System.currentTimeMillis() - pressStartTime;
             pressStartTime = 0L;
 
-            if (pressDuration > FreelookOptions.Activation.holdThreshold) {
+            if (pressDuration > FreelookOptions.holdThreshold) {
                 stop();
             }
         }
@@ -60,73 +57,43 @@ public class FreelookHandler {
     }
 
     public void start() {
-        CameraType currentPerspective = PerspectiveManager.getCurrentPerspective();
-        if (currentPerspective != lastPerspective) {
-            lastPerspective = currentPerspective;
-        }
+        if (perspectiveToggled) return;
 
-        CameraType targetPerspective = switch (FreelookOptions.perspectiveMode) {
-            case FIRST_PERSON -> CameraType.FIRST_PERSON;
-            case THIRD_PERSON -> CameraType.THIRD_PERSON_BACK;
-            case THIRD_PERSON_REVERSED -> CameraType.THIRD_PERSON_FRONT;
-        };
+        lastPerspective = PerspectiveManager.getCurrentPerspective();
 
-        switch (FreelookOptions.changePerspective) {
-            case NEVER -> {}
-            case FIRST_PERSON_ONLY -> {
-                if (lastPerspective == CameraType.FIRST_PERSON) {
-                    PerspectiveManager.setPerspective(targetPerspective);
-                }
-            }
-            case THIRD_PERSON_ONLY -> {
-                if (lastPerspective != CameraType.FIRST_PERSON) {
-                    PerspectiveManager.setPerspective(targetPerspective);
-                }
-            }
-            case ALWAYS -> PerspectiveManager.setPerspective(targetPerspective);
-        }
+        PerspectiveManager.setPerspective(FreelookOptions.perspectiveType.asCameraType());
 
-        if (FreelookOptions.smoothCamera) {
-            timer.start();
-        }
+        if (FreelookOptions.smoothCamera) timer.start();
 
         LocalPlayer player = Minecraft.getInstance().player;
-        if (player != null) {
-            CameraStateHandler handler = (CameraStateHandler) player;
-            handler.freelook$setPitch(player.getXRot());
-            handler.freelook$setYaw(player.getYRot());
+
+        if (player instanceof CameraStateTracker tracker) {
+            tracker.freelook$setPitch(player.getXRot());
+            tracker.freelook$setYaw(player.getYRot());
         }
 
         perspectiveToggled = true;
     }
 
     public void stop() {
+        if (!perspectiveToggled) return;
+
         perspectiveToggled = false;
         PerspectiveManager.setPerspective(lastPerspective);
         timer.stop();
     }
 
     public float applySmoothScale(float z) {
-        if (!perspectiveToggled || timer.isComplete() || !FreelookOptions.smoothCamera) {
-            return z;
-        }
+        if (!perspectiveToggled || timer.isComplete() || !FreelookOptions.smoothCamera) return z;
 
         float transitionProgress = timer.getCurrentProgress();
         float scale = 0.125f + transitionProgress * (1.0f - 0.125f);
         return z * scale;
     }
 
-    public static float updateCameraValue(
-        float currentValue,
-        float delta,
-        boolean invert,
-        boolean lock
-    ) {
-        float adjustedDelta = invert ? -delta : delta;
-        if (lock) {
-            return Mth.clamp(currentValue + adjustedDelta, -90.0F, 90.0F);
-        } else {
-            return currentValue + adjustedDelta;
-        }
+    public static float calculateCameraRotation(float currentValue, double delta, FreelookOptions.MovementConfig options) {
+        delta = (delta * 0.15F * (options.invert ? -1 : 1));
+        float rotation = currentValue + (float) delta;
+        return options.lock ? Mth.clamp(rotation, -90.0F, 90.0F) : rotation;
     }
 }

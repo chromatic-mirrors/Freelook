@@ -1,6 +1,6 @@
 package org.codeberg.chromatic.freelook.util;
 
-public interface CameraStateHandler {
+public interface CameraStateTracker {
     float freelook$getPitch();
     float freelook$getYaw();
 

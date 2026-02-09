@@ -3,10 +3,9 @@ package org.codeberg.chromatic.freelook.mixin;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.world.entity.Entity;
 import org.codeberg.chromatic.freelook.handler.FreelookHandler;
-import org.codeberg.chromatic.freelook.util.CameraStateHandler;
+import org.codeberg.chromatic.freelook.util.CameraStateTracker;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.client.Camera;
-import net.minecraft.client.player.LocalPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
@@ -24,15 +23,13 @@ public abstract class MixinCamera {
             )
     )
     private void modifyRotationArgs(Args args, @Local(argsOnly = true) Entity entity) {
-        if (entity instanceof LocalPlayer player) {
-            CameraStateHandler handler = (CameraStateHandler) player;
-
+        if (entity instanceof CameraStateTracker tracker) {
             if (FreelookHandler.INSTANCE.perspectiveToggled) {
-                args.set(0, handler.freelook$getYaw());
-                args.set(1, handler.freelook$getPitch());
+                args.set(0, tracker.freelook$getYaw());
+                args.set(1, tracker.freelook$getPitch());
             } else {
-                handler.freelook$setYaw(args.get(0));
-                handler.freelook$setPitch(args.get(1));
+                tracker.freelook$setYaw(args.get(0));
+                tracker.freelook$setPitch(args.get(1));
             }
         }
     }

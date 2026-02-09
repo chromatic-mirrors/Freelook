@@ -1,18 +1,19 @@
 {
-  "required": true,
-  "package": "org.codeberg.chromatic.freelook.mixin",
-  "compatibilityLevel": "JAVA_25",
-  "client": [
-    "MixinCamera",
-    "MixinMinecraft"
-  ],
-  "mixins": [
-    "MixinEntity"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  },
-  "overwrites": {
-    "requireAnnotations": true
+    "required": true,
+    "package": "org.codeberg.chromatic.freelook.mixin",
+    "compatibilityLevel": "JAVA_25",
+    "client": [
+        "MixinCamera",
+        "MixinLocalPlayer",
+        "MixinMinecraft"
+    ],
+    "mixins": [
+        "MixinEntity"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    },
+    "overwrites": {
+        "requireAnnotations": true
   }
 }
