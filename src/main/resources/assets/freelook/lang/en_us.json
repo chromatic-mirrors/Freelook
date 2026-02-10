@@ -1,6 +1,9 @@
 {
   "modmenu.descriptionTranslation.countdown": "Allows you to rotate your camera freely around your character!",
 
+  "key.category.freelook.freelook": "Freelook",
+  "freelook.key.activate": "Activate Freelook",
+
   "freelook.freelook": "Freelook",
 
   "freelook.perspective": "Perspective",
