@@ -1,6 +1,6 @@
 package org.codeberg.chromatic.freelook.mixin;
 
-import org.codeberg.chromatic.freelook.option.FreelookOptions;
+import org.codeberg.chromatic.freelook.Freelook;
 import org.codeberg.chromatic.freelook.handler.FreelookHandler;
 import org.codeberg.chromatic.freelook.util.CameraStateTracker;
 import net.minecraft.world.entity.Entity;
@@ -14,20 +14,20 @@ public class MixinEntity {
 
     @Inject(
             method = "turn",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;setXRot(F)V"),
+            at = @At("HEAD"),
             cancellable = true
     )
     public void rotate(double yaw, double pitch, CallbackInfo ci) {
         if (FreelookHandler.INSTANCE.perspectiveToggled && this instanceof CameraStateTracker tracker) {
-            if (FreelookOptions.PITCH.enabled) tracker.freelook$setPitch(
+            if (Freelook.config().pitchEnabled) tracker.freelook$setPitch(
                     FreelookHandler.calculateCameraRotation(
-                            tracker.freelook$getPitch(), pitch, FreelookOptions.PITCH
+                            tracker.freelook$getPitch(), pitch, Freelook.config().invertPitch, Freelook.config().lockPitch
                     )
             );
 
-            if (FreelookOptions.YAW.enabled) tracker.freelook$setYaw(
+            if (Freelook.config().yawEnabled) tracker.freelook$setYaw(
                     FreelookHandler.calculateCameraRotation(
-                            tracker.freelook$getYaw(), yaw, FreelookOptions.YAW
+                            tracker.freelook$getYaw(), yaw, Freelook.config().invertYaw, false
                     )
             );
 

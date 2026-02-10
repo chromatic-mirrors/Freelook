@@ -3,7 +3,7 @@
     "id": "freelook",
     "version": "2.0.0-alpha.1",
     "name": "Freelook",
-    "description": "${mod_description}",
+    "description": "Allows you to rotate your camera freely around your character!",
     "authors": [
         "chromatic"
     ],
@@ -19,6 +19,9 @@
     "environment": "client",
     "entrypoints": {
         "client": [
+            "org.codeberg.chromatic.freelook.Freelook"
+        ],
+        "modmenu": [
             "org.codeberg.chromatic.freelook.Freelook"
         ]
     },

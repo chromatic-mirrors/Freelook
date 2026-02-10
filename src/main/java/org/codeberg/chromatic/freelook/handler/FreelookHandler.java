@@ -1,6 +1,6 @@
 package org.codeberg.chromatic.freelook.handler;
 
-import org.codeberg.chromatic.freelook.option.FreelookOptions;
+import org.codeberg.chromatic.freelook.Freelook;
 import org.codeberg.chromatic.freelook.util.CameraStateTracker;
 import org.codeberg.chromatic.freelook.util.PerspectiveManager;
 import org.codeberg.chromatic.freelook.util.SmoothTransitionTimer;
@@ -19,7 +19,7 @@ public class FreelookHandler {
     private final SmoothTransitionTimer timer = new SmoothTransitionTimer(650L);
 
     public void tick(KeyMapping key) {
-        switch (FreelookOptions.pressMode) {
+        switch (Freelook.config().pressMode) {
             case QUICK_PRESS -> handlePressAndHold(key.isDown());
             case TOGGLE -> {
                 if (key.consumeClick()) toggle();
@@ -42,7 +42,7 @@ public class FreelookHandler {
             long pressDuration = System.currentTimeMillis() - pressStartTime;
             pressStartTime = 0L;
 
-            if (pressDuration > FreelookOptions.holdThreshold) {
+            if (pressDuration > Freelook.config().holdThreshold) {
                 stop();
             }
         }
@@ -61,9 +61,9 @@ public class FreelookHandler {
 
         lastPerspective = PerspectiveManager.getCurrentPerspective();
 
-        PerspectiveManager.setPerspective(FreelookOptions.perspectiveType.asCameraType());
+        PerspectiveManager.setPerspective(Freelook.config().perspectiveType.asCameraType());
 
-        if (FreelookOptions.smoothCamera) timer.start();
+        if (Freelook.config().smoothCamera) timer.start();
 
         LocalPlayer player = Minecraft.getInstance().player;
 
@@ -84,16 +84,16 @@ public class FreelookHandler {
     }
 
     public float applySmoothScale(float z) {
-        if (!perspectiveToggled || timer.isComplete() || !FreelookOptions.smoothCamera) return z;
+        if (!perspectiveToggled || timer.isComplete() || !Freelook.config().smoothCamera) return z;
 
         float transitionProgress = timer.getCurrentProgress();
         float scale = 0.125f + transitionProgress * (1.0f - 0.125f);
         return z * scale;
     }
 
-    public static float calculateCameraRotation(float currentValue, double delta, FreelookOptions.MovementConfig options) {
-        delta = (delta * 0.15F * (options.invert ? -1 : 1));
+    public static float calculateCameraRotation(float currentValue, double delta, boolean invert, boolean lock) {
+        delta = (delta * 0.15F * (invert ? -1 : 1));
         float rotation = currentValue + (float) delta;
-        return options.lock ? Mth.clamp(rotation, -90.0F, 90.0F) : rotation;
+        return lock ? Mth.clamp(rotation, -90.0F, 90.0F) : rotation;
     }
 }

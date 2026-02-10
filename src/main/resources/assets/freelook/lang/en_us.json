@@ -1,0 +1,54 @@
+{
+  "modmenu.descriptionTranslation.countdown": "Allows you to rotate your camera freely around your character!",
+
+  "freelook.freelook": "Freelook",
+
+  "freelook.perspective": "Perspective",
+
+  "freelook.perspective.activation": "Activation",
+
+  "freelook.perspective_type": "Perspective Type",
+  "freelook.perspective_type.description": "Which perspective to start in.",
+  "freelook.perspective_type.first_person": "First Person",
+  "freelook.perspective_type.third_person_back": "Third Person (Back)",
+  "freelook.perspective_type.third_person_front": "Third Person (Front)",
+
+  "freelook.press_mode": "Press Mode",
+  "freelook.press_mode.description": "Whether you can hold, quick press, or toggle to activate",
+  "freelook.press_mode.hold": "Hold",
+  "freelook.press_mode.quick_press": "Quick Press",
+  "freelook.press_mode.toggle": "Toggle",
+
+  "freelook.hold_threshold": "Hold Threshold",
+  "freelook.hold_threshold.description": "How long you can hold before Freelook is disabled upon release",
+
+  "freelook.perspective.pitch": "Pitch",
+  "freelook.perspective.pitch.description": "-- TBD --",
+  "freelook.perspective.pitch.enabled": "Enable",
+  "freelook.perspective.pitch.enabled.description": "-- TBD --",
+  "freelook.perspective.pitch.invert": "Invert",
+  "freelook.perspective.pitch.invert.description": "-- TBD --",
+  "freelook.perspective.pitch.lock": "Lock",
+  "freelook.perspective.pitch.lock.description": "-- TBD --",
+
+  "freelook.perspective.yaw": "Yaw",
+  "freelook.perspective.yaw.description": "-- TBD --",
+  "freelook.perspective.yaw.enabled": "Enable",
+  "freelook.perspective.yaw.enabled.description": "-- TBD --",
+  "freelook.perspective.yaw.invert": "Invert",
+  "freelook.perspective.yaw.invert.description": "-- TBD --",
+
+  "freelook.misc": "Misc",
+
+  "freelook.perspective.add_to_camera_cycle": "Add to Camera Cycle",
+  "freelook.perspective.add_to_camera_cycle.description": "-- TBD --",
+
+  "freelook.cycle_change_action": "Cycle Change Action",
+  "freelook.cycle_change_action.description": "-- TBD --",
+  "freelook.cycle_change_action.change_and_freelook": "Change & Freelook",
+  "freelook.cycle_change_action.stop_freelook": "Stop Freelook",
+  "freelook.cycle_change_action.block_perspective_change": "Block Perspective Change",
+
+  "freelook.perspective.smooth_camera": "Smooth Camera",
+  "freelook.perspective.smooth_camera.description": "-- TBD --"
+}
