@@ -1,9 +1,9 @@
 package org.codeberg.chromatic.freelook.handler;
 
 import org.codeberg.chromatic.freelook.Freelook;
+import org.codeberg.chromatic.freelook.util.CameraController;
 import org.codeberg.chromatic.freelook.util.CameraStateTracker;
-import org.codeberg.chromatic.freelook.util.PerspectiveManager;
-import org.codeberg.chromatic.freelook.util.SmoothTransitionTimer;
+import org.codeberg.chromatic.freelook.util.EasingProgressTimer;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -13,10 +13,10 @@ import net.minecraft.util.Mth;
 public class FreelookHandler {
     public static final FreelookHandler INSTANCE = new FreelookHandler();
 
-    public boolean perspectiveToggled = false;
-    private CameraType lastPerspective = CameraType.FIRST_PERSON;
+    public boolean freelookToggled = false;
+    CameraType lastPerspective = CameraType.FIRST_PERSON;
     private long pressStartTime = 0;
-    private final SmoothTransitionTimer timer = new SmoothTransitionTimer(650L);
+    final EasingProgressTimer timer = new EasingProgressTimer(650L);
 
     public void tick(KeyMapping key) {
         switch (Freelook.config().pressMode) {
@@ -49,7 +49,7 @@ public class FreelookHandler {
     }
 
     public void toggle() {
-        if (perspectiveToggled) {
+        if (freelookToggled) {
             stop();
         } else {
             start();
@@ -57,36 +57,38 @@ public class FreelookHandler {
     }
 
     public void start() {
-        if (perspectiveToggled) return;
-
-        lastPerspective = PerspectiveManager.getCurrentPerspective();
-
-        PerspectiveManager.setPerspective(Freelook.config().perspectiveType.asCameraType());
-
-        if (Freelook.config().smoothCamera) timer.start();
-
         LocalPlayer player = Minecraft.getInstance().player;
+        if (player == null) return;
+
+        if (freelookToggled) return;
+
+        lastPerspective = Minecraft.getInstance().options.getCameraType();
+
+        CameraController.set(Freelook.config().perspectiveType.asCameraType());
+
+        timer.start();
 
         if (player instanceof CameraStateTracker tracker) {
             tracker.freelook$setPitch(player.getXRot());
             tracker.freelook$setYaw(player.getYRot());
         }
 
-        perspectiveToggled = true;
+        freelookToggled = true;
     }
 
     public void stop() {
-        if (!perspectiveToggled) return;
+        if (!freelookToggled) return;
 
-        perspectiveToggled = false;
-        PerspectiveManager.setPerspective(lastPerspective);
+        freelookToggled = false;
+        CameraCycleHandler.hasCycledFreelook = false;
+        CameraController.restore(lastPerspective);
         timer.stop();
     }
 
     public float applySmoothScale(float z) {
-        if (!perspectiveToggled || timer.isComplete() || !Freelook.config().smoothCamera) return z;
+        if (!freelookToggled || timer.isComplete() || !Freelook.config().smoothCamera) return z;
 
-        float transitionProgress = timer.getCurrentProgress();
+        float transitionProgress = timer.getProgress();
         float scale = 0.125f + transitionProgress * (1.0f - 0.125f);
         return z * scale;
     }

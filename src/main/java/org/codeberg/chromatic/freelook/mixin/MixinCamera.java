@@ -1,12 +1,13 @@
 package org.codeberg.chromatic.freelook.mixin;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.world.entity.Entity;
 import org.codeberg.chromatic.freelook.handler.FreelookHandler;
 import org.codeberg.chromatic.freelook.util.CameraStateTracker;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.client.Camera;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
@@ -14,17 +15,20 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 @Mixin(Camera.class)
 public abstract class MixinCamera {
 
+    @Shadow
+    private @Nullable Entity entity;
+
     @ModifyArgs(
-            method = "setup",
+            method = "alignWithEntity",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/Camera;setRotation(FF)V",
                     ordinal = 1
             )
     )
-    private void modifyRotationArgs(Args args, @Local(argsOnly = true) Entity entity) {
+    private void modifyRotationArgs(Args args) {
         if (entity instanceof CameraStateTracker tracker) {
-            if (FreelookHandler.INSTANCE.perspectiveToggled) {
+            if (FreelookHandler.INSTANCE.freelookToggled) {
                 args.set(0, tracker.freelook$getYaw());
                 args.set(1, tracker.freelook$getPitch());
             } else {
@@ -38,5 +42,6 @@ public abstract class MixinCamera {
     private float adjustClipReturn(float original) {
         return FreelookHandler.INSTANCE.applySmoothScale(original);
     }
+
 
 }

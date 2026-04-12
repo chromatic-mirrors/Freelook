@@ -1,0 +1,18 @@
+[versions]
+loader = "0.19.1"
+minecraft = "26.1"
+
+yacl = "3.9.2+26.1-fabric"
+modmenu = "18.0.0-alpha.8"
+
+loom = "1.16.1"
+
+[libraries]
+loader = { module = "net.fabricmc:fabric-loader", version.ref = "loader" }
+minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
+
+yacl = { module = "dev.isxander:yet-another-config-lib", version.ref = "yacl" }
+modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
+
+[plugins]
+loom = { id = "net.fabricmc.fabric-loom", version.ref = "loom" }

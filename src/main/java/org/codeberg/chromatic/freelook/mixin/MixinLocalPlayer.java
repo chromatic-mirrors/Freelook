@@ -22,13 +22,13 @@ public class MixinLocalPlayer implements CameraStateTracker {
     }
 
     @Override
-    public void freelook$setPitch(float xRot) {
-        pitch = xRot;
+    public void freelook$setPitch(float pitch) {
+        this.pitch = pitch;
     }
 
     @Override
-    public void freelook$setYaw(float yRot) {
-        yaw = yRot;
+    public void freelook$setYaw(float yaw) {
+        this.yaw = yaw;
     }
 
 }

@@ -1,57 +1,46 @@
 {
-  "modmenu.descriptionTranslation.countdown": "Allows you to rotate your camera freely around your character!",
+    "yacl3.config.freelook:config.category.freelook": "General",
 
-  "key.category.freelook.freelook": "Freelook",
-  "freelook.key.activate": "Activate Freelook",
+    "yacl3.config.freelook:config.perspectiveType": "Perspective Type",
+    "yacl3.config.freelook:config.perspectiveType.description": "Choose the camera view used while freelook is active.",
 
-  "freelook.freelook": "Freelook",
+    "yacl3.config.freelook:config.perspectiveType.first_person": "First Person",
+    "yacl3.config.freelook:config.perspectiveType.third_person_back": "Third Person (Back)",
+    "yacl3.config.freelook:config.perspectiveType.third_person_front": "Third Person (Front)",
 
-  "freelook.perspective": "Perspective",
+    "yacl3.config.freelook:config.pressMode": "Press Mode",
+    "yacl3.config.freelook:config.pressMode.description": "Decide how the freelook key behaves (hold, quick press, or toggle).",
 
-  "freelook.perspective.activation": "Activation",
+    "yacl3.config.freelook:config.pressMode.hold": "Hold",
+    "yacl3.config.freelook:config.pressMode.quick_press": "Quick Press",
+    "yacl3.config.freelook:config.pressMode.toggle": "Toggle",
 
-  "freelook.perspective_type": "Perspective Type",
-  "freelook.perspective_type.description": "Which perspective to start in.",
-  "freelook.perspective_type.first_person": "First Person",
-  "freelook.perspective_type.third_person_back": "Third Person (Back)",
-  "freelook.perspective_type.third_person_front": "Third Person (Front)",
+    "yacl3.config.freelook:config.holdThreshold": "Hold Threshold",
+    "yacl3.config.freelook:config.holdThreshold.description": "How long you must hold the key before it counts as a “hold” instead of a quick press.",
 
-  "freelook.press_mode": "Press Mode",
-  "freelook.press_mode.description": "Whether you can hold, quick press, or toggle to activate",
-  "freelook.press_mode.hold": "Hold",
-  "freelook.press_mode.quick_press": "Quick Press",
-  "freelook.press_mode.toggle": "Toggle",
+    "yacl3.config.freelook:config.addToCameraCycle": "Add to Camera Cycle",
+    "yacl3.config.freelook:config.addToCameraCycle.description": "Include freelook as part of the camera cycle.",
 
-  "freelook.hold_threshold": "Hold Threshold",
-  "freelook.hold_threshold.description": "How long you can hold before Freelook is disabled upon release",
+    "yacl3.config.freelook:config.onCycleChange": "On Cycle Change",
+    "yacl3.config.freelook:config.onCycleChange.description": "Choose what happens to freelook when the camera is cycled.",
 
-  "freelook.perspective.pitch": "Pitch",
-  "freelook.perspective.pitch.description": "-- TBD --",
-  "freelook.perspective.pitch.enabled": "Enable",
-  "freelook.perspective.pitch.enabled.description": "-- TBD --",
-  "freelook.perspective.pitch.invert": "Invert",
-  "freelook.perspective.pitch.invert.description": "-- TBD --",
-  "freelook.perspective.pitch.lock": "Lock",
-  "freelook.perspective.pitch.lock.description": "-- TBD --",
+    "yacl3.config.freelook:config.onCycleChange.change_and_freelook": "Cycle and Freelook",
+    "yacl3.config.freelook:config.onCycleChange.stop_freelook" : "Stop Freelook",
+    "yacl3.config.freelook:config.onCycleChange.block_perspective_change" : "Block Camera Cycle",
 
-  "freelook.perspective.yaw": "Yaw",
-  "freelook.perspective.yaw.description": "-- TBD --",
-  "freelook.perspective.yaw.enabled": "Enable",
-  "freelook.perspective.yaw.enabled.description": "-- TBD --",
-  "freelook.perspective.yaw.invert": "Invert",
-  "freelook.perspective.yaw.invert.description": "-- TBD --",
+    "yacl3.config.freelook:config.smoothCamera": "Smooth Perspective Change",
+    "yacl3.config.freelook:config.smoothCamera.description": "Add a smooth zoom‑out effect when freelook starts.",
 
-  "freelook.misc": "Misc",
-
-  "freelook.perspective.add_to_camera_cycle": "Add to Camera Cycle",
-  "freelook.perspective.add_to_camera_cycle.description": "-- TBD --",
-
-  "freelook.cycle_change_action": "Cycle Change Action",
-  "freelook.cycle_change_action.description": "-- TBD --",
-  "freelook.cycle_change_action.change_and_freelook": "Change & Freelook",
-  "freelook.cycle_change_action.stop_freelook": "Stop Freelook",
-  "freelook.cycle_change_action.block_perspective_change": "Block Perspective Change",
-
-  "freelook.perspective.smooth_camera": "Smooth Camera",
-  "freelook.perspective.smooth_camera.description": "-- TBD --"
+    "yacl3.config.freelook:config.category.pitch": "Pitch",
+    "yacl3.config.freelook:config.pitchEnabled": "Enabled",
+    "yacl3.config.freelook:config.pitchEnabled.description": "Allow freelook to move the camera up and down.",
+    "yacl3.config.freelook:config.invertPitch": "Invert Pitch",
+    "yacl3.config.freelook:config.invertPitch.description": "Reverse up/down movement while freelooking.",
+    "yacl3.config.freelook:config.lockPitch": "Lock Pitch",
+    "yacl3.config.freelook:config.lockPitch.description": "Prevent looking too far up or down (keeps pitch within vanilla limits).",
+    "yacl3.config.freelook:config.category.yaw": "Yaw",
+    "yacl3.config.freelook:config.yawEnabled": "Enabled",
+    "yacl3.config.freelook:config.yawEnabled.description": "Allow freelook to rotate the camera left and right.",
+    "yacl3.config.freelook:config.invertYaw": "Invert Yaw",
+    "yacl3.config.freelook:config.invertYaw.description": "Reverse left/right movement while freelooking."
 }

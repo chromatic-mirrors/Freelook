@@ -17,17 +17,17 @@ public class MixinEntity {
             at = @At("HEAD"),
             cancellable = true
     )
-    public void rotate(double yaw, double pitch, CallbackInfo ci) {
-        if (FreelookHandler.INSTANCE.perspectiveToggled && this instanceof CameraStateTracker tracker) {
+    public void rotate(double xo, double yo, CallbackInfo ci) {
+        if (FreelookHandler.INSTANCE.freelookToggled && this instanceof CameraStateTracker tracker) {
             if (Freelook.config().pitchEnabled) tracker.freelook$setPitch(
                     FreelookHandler.calculateCameraRotation(
-                            tracker.freelook$getPitch(), pitch, Freelook.config().invertPitch, Freelook.config().lockPitch
+                            tracker.freelook$getPitch(), yo, Freelook.config().invertPitch, Freelook.config().lockPitch
                     )
             );
 
             if (Freelook.config().yawEnabled) tracker.freelook$setYaw(
                     FreelookHandler.calculateCameraRotation(
-                            tracker.freelook$getYaw(), yaw, Freelook.config().invertYaw, false
+                            tracker.freelook$getYaw(), xo, Freelook.config().invertYaw, false
                     )
             );
 

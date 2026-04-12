@@ -1,0 +1,49 @@
+plugins {
+    alias(libs.plugins.loom)
+}
+
+base {
+    archivesName = project.archives_base_name
+}
+version = "${project.version}+mc${libs.versions.minecraft.get()}"
+group = project.maven_group
+
+repositories {
+    maven {
+        name 'xanderRepoReleases'
+        url 'https://maven.isxander.dev/releases'
+    }
+    maven {
+        name 'Terraformers'
+        url 'https://maven.terraformersmc.com'
+    }
+}
+
+dependencies {
+    minecraft libs.minecraft
+    implementation libs.loader
+
+    implementation libs.yacl
+    implementation libs.modmenu
+}
+
+processResources {
+    inputs.property 'version', version
+
+    filesMatching('fabric.mod.json') {
+        expand 'version': version
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+
+    withSourcesJar()
+}
+
+jar {
+    from('LICENSE') {
+        rename { "${it}_${base.archivesName.get()}" }
+    }
+}
