@@ -6,6 +6,7 @@ yacl = "3.9.2+26.1-fabric"
 modmenu = "18.0.0-alpha.8"
 
 loom = "1.16.1"
+mod-publish = "1.1.0"
 
 [libraries]
 loader = { module = "net.fabricmc:fabric-loader", version.ref = "loader" }
@@ -16,3 +17,4 @@ modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
 
 [plugins]
 loom = { id = "net.fabricmc.fabric-loom", version.ref = "loom" }
+mod-publish = { id = "me.modmuss50.mod-publish-plugin", version.ref = "mod-publish" }

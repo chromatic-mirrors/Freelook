@@ -14,11 +14,16 @@ public class FreelookHandler {
     public static final FreelookHandler INSTANCE = new FreelookHandler();
 
     public boolean freelookToggled = false;
+
+    public boolean enabledServer = true;
+
     CameraType lastPerspective = CameraType.FIRST_PERSON;
     private long pressStartTime = 0;
     final EasingProgressTimer timer = new EasingProgressTimer(650L);
 
     public void tick(KeyMapping key) {
+        if (!enabledServer) return;
+
         switch (Freelook.config().pressMode) {
             case QUICK_PRESS -> handlePressAndHold(key.isDown());
             case TOGGLE -> {
