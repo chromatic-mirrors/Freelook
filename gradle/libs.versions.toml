@@ -1,11 +1,11 @@
 [versions]
-loader = "0.19.1"
-minecraft = "26.1"
+loader = "0.19.2"
+minecraft = "1.21.10"
 
-yacl = "3.9.2+26.1-fabric"
-modmenu = "18.0.0-alpha.8"
+yacl = "3.8.2+1.21.10-fabric"
+modmenu = "16.0.1"
 
-loom = "1.16.1"
+loom = "1.16-SNAPSHOT"
 mod-publish = "1.1.0"
 
 [libraries]
@@ -16,5 +16,5 @@ yacl = { module = "dev.isxander:yet-another-config-lib", version.ref = "yacl" }
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
 
 [plugins]
-loom = { id = "net.fabricmc.fabric-loom", version.ref = "loom" }
+loom = { id = "net.fabricmc.fabric-loom-remap", version.ref = "loom" }
 mod-publish = { id = "me.modmuss50.mod-publish-plugin", version.ref = "mod-publish" }

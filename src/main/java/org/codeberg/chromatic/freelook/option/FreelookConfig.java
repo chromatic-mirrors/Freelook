@@ -9,11 +9,11 @@ import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.CameraType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 public class FreelookConfig {
     public static final ConfigClassHandler<FreelookConfig> HANDLER = ConfigClassHandler.createBuilder(FreelookConfig.class)
-            .id(Identifier.fromNamespaceAndPath("freelook", "config"))
+            .id(ResourceLocation.fromNamespaceAndPath("freelook", "config"))
             .serializer(config -> GsonConfigSerializerBuilder.create(config)
                     .setPath(FabricLoader.getInstance().getConfigDir().resolve("freelook.json5"))
                     .appendGsonBuilder(GsonBuilder::setPrettyPrinting)

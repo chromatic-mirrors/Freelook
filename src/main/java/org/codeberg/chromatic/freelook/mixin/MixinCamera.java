@@ -5,7 +5,6 @@ import org.codeberg.chromatic.freelook.handler.FreelookHandler;
 import org.codeberg.chromatic.freelook.util.CameraStateTracker;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.client.Camera;
-import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,10 +15,10 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 public abstract class MixinCamera {
 
     @Shadow
-    private @Nullable Entity entity;
+    private Entity entity;
 
     @ModifyArgs(
-            method = "alignWithEntity",
+            method = "setup",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/Camera;setRotation(FF)V",

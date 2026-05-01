@@ -22,10 +22,12 @@ repositories {
 
 dependencies {
     minecraft libs.minecraft
-    implementation libs.loader
+    mappings loom.officialMojangMappings()
 
-    implementation libs.yacl
-    implementation libs.modmenu
+    modImplementation libs.loader
+
+    modImplementation libs.yacl
+    modImplementation libs.modmenu
 }
 
 processResources {
@@ -37,8 +39,8 @@ processResources {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_25
-    targetCompatibility = JavaVersion.VERSION_25
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 
     withSourcesJar()
 }
@@ -58,7 +60,7 @@ publishMods {
     modrinth {
         projectId = "S1v2ASLQ"
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
-        minecraftVersions.addAll("26.1", "26.1.1", "26.1.2") // better way to do this?
+        minecraftVersions.addAll("1.21.9", "1.21.10", "1.21.11") // better way to do this?
         requires("yacl")
     }
 
@@ -66,7 +68,7 @@ publishMods {
         projectId = "1369273"
         projectSlug = "freelook-oneconfig"
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
-        minecraftVersions.addAll("26.1", "26.1.1", "26.1.2")
+        minecraftVersions.addAll("1.21.9", "1.21.10", "1.21.11")
         requires("yacl")
     }
 
