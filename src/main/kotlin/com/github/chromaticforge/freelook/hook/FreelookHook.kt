@@ -29,6 +29,8 @@ object FreelookHook {
         if (FreelookConfig.enabled) {
             if (perspectiveToggled == enabled) return
 
+            if (mc.thePlayer == null) return
+
             cameraYaw = mc.thePlayer.rotationYaw
             cameraPitch = mc.thePlayer.rotationPitch
 
