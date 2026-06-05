@@ -1,9 +1,8 @@
 plugins {
     id("dev.kikugie.stonecutter")
-    id("me.modmuss50.mod-publish-plugin") version "2.0.0-beta.2"
 }
 
-stonecutter active "1.21.8"
+stonecutter active "26.1"
 
 stonecutter parameters {
     swaps["mod_version"] = "\"${property("mod.version")}\";"

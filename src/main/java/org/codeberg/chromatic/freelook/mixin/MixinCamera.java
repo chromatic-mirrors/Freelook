@@ -19,9 +19,9 @@ public abstract class MixinCamera {
 
     @ModifyArgs(
             /*? if >=26.1 {*/
-            /*method = "alignWithEntity",
-            *//*?} else */
-            method = "setup",
+            method = "alignWithEntity",
+            /*?} else */
+            //method = "setup",
             /**/
             at = @At(
                     value = "INVOKE",

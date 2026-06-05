@@ -18,4 +18,3 @@ public class CameraController {
         Minecraft.getInstance().options.setCameraType(type);
     }
 }
-

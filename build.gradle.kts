@@ -1,8 +1,9 @@
 plugins {
     id("dev.kikugie.loom-back-compat")
+    id("me.modmuss50.mod-publish-plugin") version "2.0.0"
 }
 
-version = "${property("mod.version")}+${sc.current.version}"
+version = "${property("mod.version")}+mc${sc.current.version}"
 base.archivesName = property("mod.id") as String
 
 val requiredJava: JavaVersion = when {
@@ -97,5 +98,22 @@ tasks {
         from(loomx.modJar.map { it.archiveFile }, loomx.modSourcesJar.map { it.archiveFile })
         into(rootProject.layout.buildDirectory.file("libs/${project.property("mod.version")}"))
         dependsOn("build")
+    }
+}
+
+publishMods {
+    file = loomx.modJar.get().archiveFile
+    changelog = project.rootProject.file("CHANGELOG.md").takeIf { it.exists() }?.readText() ?: "No changelog provided."
+    type = ALPHA
+    modLoaders.add("fabric")
+
+    modrinth {
+        projectId = property("publish.modrinth").toString()
+        accessToken = findProperty("modrinth.token").toString()
+
+        minecraftVersions.add(sc.current.version)
+
+        requires("yacl")
+        optional("modmenu")
     }
 }
