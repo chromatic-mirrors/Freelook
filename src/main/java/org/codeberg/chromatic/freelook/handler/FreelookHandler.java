@@ -4,13 +4,15 @@ import org.codeberg.chromatic.freelook.Freelook;
 import org.codeberg.chromatic.freelook.util.CameraController;
 import org.codeberg.chromatic.freelook.util.CameraStateTracker;
 import org.codeberg.chromatic.freelook.util.EasingProgressTimer;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.CameraType;
 import net.minecraft.util.Mth;
 
+import static org.codeberg.chromatic.freelook.Freelook.ACTIVATION_KEY;
+
 public class FreelookHandler {
+
     public static final FreelookHandler INSTANCE = new FreelookHandler();
 
     public boolean freelookToggled = false;
@@ -21,16 +23,16 @@ public class FreelookHandler {
     private long pressStartTime = 0;
     final EasingProgressTimer timer = new EasingProgressTimer(650L);
 
-    public void tick(KeyMapping key) {
+    public void tick(Minecraft minecraft) {
         if (!enabledServer) return;
 
         switch (Freelook.config().pressMode) {
-            case QUICK_PRESS -> handlePressAndHold(key.isDown());
+            case QUICK_PRESS -> handlePressAndHold(ACTIVATION_KEY.isDown());
             case TOGGLE -> {
-                if (key.consumeClick()) toggle();
+                if (ACTIVATION_KEY.consumeClick()) toggle();
             }
             case HOLD -> {
-                if (key.isDown()) {
+                if (ACTIVATION_KEY.isDown()) {
                     start();
                 } else {
                     stop();
@@ -103,4 +105,5 @@ public class FreelookHandler {
         float rotation = currentValue + (float) delta;
         return lock ? Mth.clamp(rotation, -90.0F, 90.0F) : rotation;
     }
+
 }

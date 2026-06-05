@@ -10,7 +10,7 @@ Allows you to rotate your camera freely around your character!
 - Smooth Transitions
 
 ### Server Opt-Opt
-Some servers may consider freelook a competitive advantage. As of 2.0.0, Freelook includes a simple opt‑out protocol.
+Some servers may consider freelook a competitive advantage. Since 2.0.0, Freelook includes a simple opt‑out protocol.
 
 #### How it works
 1. When a player joins, the client sends a `freelook:handshake` packet.

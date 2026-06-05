@@ -1,8 +1,8 @@
 {
     "schemaVersion": 1,
-    "id": "freelook",
+    "id": "${id}",
     "version": "${version}",
-    "name": "Freelook",
+    "name": "${name}",
     "description": "Allows you to rotate your camera freely around your character!",
     "authors": [
         "chromatic"
@@ -12,7 +12,9 @@
         "sources": "https://codeberg.org/chromatic/Freelook"
     },
     "contributors": [
-        "awruff", "Tellinq"
+        "awruff",
+        "Tellinq",
+        "zircta"
     ],
     "license": "LGPL-3.0",
     "icon": "assets/freelook/icon.png",
@@ -26,11 +28,15 @@
         ]
     },
     "mixins": [
-        "mixins.freelook.json"
+        "freelook.mixins.json"
     ],
     "depends": {
-        "minecraft": "~26.1",
-        "fabricloader": ">=0.18.0"
+        "minecraft": "${minecraft}",
+        "fabricloader": ">=0.17",
+        "yet_another_config_lib_v3": "${yacl3}"
+    },
+    "recommends": {
+        "modmenu": "*"
     },
     "conflicts": {
         "ichor": "*",

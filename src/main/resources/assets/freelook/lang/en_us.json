@@ -42,5 +42,8 @@
     "yacl3.config.freelook:config.yawEnabled": "Enabled",
     "yacl3.config.freelook:config.yawEnabled.description": "Allow freelook to rotate the camera left and right.",
     "yacl3.config.freelook:config.invertYaw": "Invert Yaw",
-    "yacl3.config.freelook:config.invertYaw.description": "Reverse left/right movement while freelooking."
+    "yacl3.config.freelook:config.invertYaw.description": "Reverse left/right movement while freelooking.",
+
+    "category.freelook.freelook": "Freelook",
+    "key.freelook.activate": "Activate Freelook"
 }

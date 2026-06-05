@@ -1,19 +1,17 @@
 {
     "required": true,
     "package": "org.codeberg.chromatic.freelook.mixin",
-    "compatibilityLevel": "JAVA_25",
+    "compatibilityLevel": "${java}",
     "client": [
         "MixinCamera",
+        "MixinEntity",
         "MixinLocalPlayer",
         "MixinMinecraft"
-    ],
-    "mixins": [
-        "MixinEntity"
     ],
     "injectors": {
         "defaultRequire": 1
     },
     "overwrites": {
         "requireAnnotations": true
-  }
+    }
 }

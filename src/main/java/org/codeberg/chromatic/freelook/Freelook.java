@@ -2,14 +2,14 @@ package org.codeberg.chromatic.freelook;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.fabricmc.fabric.impl.client.keymapping.KeyMappingRegistryImpl;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import org.codeberg.chromatic.freelook.handler.FreelookHandler;
 import org.codeberg.chromatic.freelook.network.DisableModPayload;
 import org.codeberg.chromatic.freelook.network.HandshakePayload;
@@ -18,22 +18,29 @@ import org.lwjgl.glfw.GLFW;
 
 public class Freelook implements ClientModInitializer {
 
+    //? if >=1.21.9 {
+    /*private static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(ResourceLocation.fromNamespaceAndPath("freelook", "freelook"));
+    *///?} else {
+    private static final String CATEGORY = "category.freelook.freelook";
+    //?}
+
+    public static final KeyMapping ACTIVATION_KEY = KeyBindingHelper.registerKeyBinding(
+            new KeyMapping("key.freelook.activate", GLFW.GLFW_KEY_LEFT_ALT, CATEGORY)
+    );
+
     @Override
     public void onInitializeClient() {
-        KeyMapping.Category freelookCategory = KeyMapping.Category.register(Identifier.fromNamespaceAndPath("freelook", "freelook"));
-        KeyMapping activationKey = new KeyMapping("freelook.key.activate", GLFW.GLFW_KEY_V, freelookCategory);
+        ClientTickEvents.END_CLIENT_TICK.register(FreelookHandler.INSTANCE::tick);
 
-        KeyMappingRegistryImpl.registerKeyMapping(activationKey);
-        ClientTickEvents.END_CLIENT_TICK.register(_ -> FreelookHandler.INSTANCE.tick(activationKey));
-
-        PayloadTypeRegistry.clientboundPlay().register(DisableModPayload.TYPE, DisableModPayload.CODEC);
-        PayloadTypeRegistry.serverboundPlay().register(HandshakePayload.TYPE, HandshakePayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(DisableModPayload.TYPE, DisableModPayload.CODEC);
+        PayloadTypeRegistry.playC2S().register(HandshakePayload.TYPE, HandshakePayload.CODEC);
 
         ClientPlayNetworking.registerGlobalReceiver(DisableModPayload.TYPE, (payload, context) -> {
             FreelookHandler.INSTANCE.enabledServer = false;
+
             Component message = Component.literal("This server has disabled Freelook.").withStyle(ChatFormatting.RED);
 
-            context.player().sendSystemMessage(message);
+            context.player().displayClientMessage(message /*? if < 26.1*/, true);
         });
 
         ClientPlayConnectionEvents.JOIN.register((listener, sender, minecraft) -> {
@@ -50,5 +57,4 @@ public class Freelook implements ClientModInitializer {
     public static FreelookConfig config() {
         return FreelookConfig.HANDLER.instance();
     }
-
 }
