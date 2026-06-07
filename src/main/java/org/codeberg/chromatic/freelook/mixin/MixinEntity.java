@@ -21,13 +21,13 @@ public class MixinEntity {
         if (FreelookHandler.INSTANCE.freelookToggled && this instanceof CameraStateTracker tracker) {
             if (Freelook.config().pitchEnabled) tracker.freelook$setPitch(
                     FreelookHandler.calculateCameraRotation(
-                            tracker.freelook$getPitch(), yo, Freelook.config().invertPitch, Freelook.config().lockPitch
+                            tracker.freelook$getPitch(), yo, Freelook.config().pitchInvert, Freelook.config().pitchLock
                     )
             );
 
             if (Freelook.config().yawEnabled) tracker.freelook$setYaw(
                     FreelookHandler.calculateCameraRotation(
-                            tracker.freelook$getYaw(), xo, Freelook.config().invertYaw, false
+                            tracker.freelook$getYaw(), xo, Freelook.config().yawInvert, false
                     )
             );
 

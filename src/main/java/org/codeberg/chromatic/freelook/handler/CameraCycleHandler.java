@@ -9,13 +9,13 @@ public class CameraCycleHandler {
 
     public static boolean shouldOverrideCameraCycle() {
         switch (Freelook.config().onCycleChange) {
-            case STOP_FREELOOK -> FreelookHandler.INSTANCE.freelookToggled = false;
-            case BLOCK_PERSPECTIVE_CHANGE -> {
+            case 1 -> FreelookHandler.INSTANCE.freelookToggled = false;
+            case 2 -> {
                 if (FreelookHandler.INSTANCE.freelookToggled && !hasCycledFreelook) {
                     return false;
                 }
             }
-            case CHANGE_AND_FREELOOK -> {}
+            case 0 -> {}
         }
 
         if (Freelook.config().addToCameraCycle) {

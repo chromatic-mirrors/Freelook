@@ -28,6 +28,8 @@ public class Freelook implements ClientModInitializer {
             new KeyMapping("key.freelook.activate", GLFW.GLFW_KEY_LEFT_ALT, CATEGORY)
     );
 
+    private static FreelookConfig config;
+
     @Override
     public void onInitializeClient() {
         ClientTickEvents.END_CLIENT_TICK.register(FreelookHandler.INSTANCE::tick);
@@ -55,10 +57,10 @@ public class Freelook implements ClientModInitializer {
             FreelookHandler.INSTANCE.enabledServer = true;
         });
 
-        FreelookConfig.HANDLER.load();
+        config = new FreelookConfig();
     }
 
     public static FreelookConfig config() {
-        return FreelookConfig.HANDLER.instance();
+        return config;
     }
 }

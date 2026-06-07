@@ -27,11 +27,11 @@ public class FreelookHandler {
         if (!enabledServer) return;
 
         switch (Freelook.config().pressMode) {
-            case QUICK_PRESS -> handlePressAndHold(ACTIVATION_KEY.isDown());
-            case TOGGLE -> {
+            case 1 -> handlePressAndHold(ACTIVATION_KEY.isDown());
+            case 2 -> {
                 if (ACTIVATION_KEY.consumeClick()) toggle();
             }
-            case HOLD -> {
+            case 0 -> {
                 if (ACTIVATION_KEY.isDown()) {
                     start();
                 } else {
@@ -71,7 +71,9 @@ public class FreelookHandler {
 
         lastPerspective = Minecraft.getInstance().options.getCameraType();
 
-        CameraController.set(Freelook.config().perspectiveType.asCameraType());
+        CameraController.set(
+                CameraType.values()[Freelook.config().perspectiveType]
+        );
 
         timer.start();
 

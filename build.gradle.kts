@@ -27,21 +27,44 @@ repositories {
 
     maven("https://maven.isxander.dev/releases")
     maven("https://maven.terraformersmc.com/")
+
+    maven("https://maven.parchmentmc.org")
+    maven("https://repo.polyfrost.org/releases")
+    maven("https://repo.polyfrost.org/snapshots")
+    maven("https://maven.gegy.dev/releases")
+    maven("https://maven.logix.dev/snapshots")
+    maven("https://nexus.prsm.wtf/repository/maven-public/maven-repo/releases/")
+    maven("https://repo.hypixel.net/repository/Hypixel/")
+    maven("https://maven.deftu.dev/releases")
+    maven("https://maven.fabricmc.net/releases")
+    maven("https://jitpack.io") { content { includeGroupAndSubgroups("com.github") } }
+    maven("https://maven.bawnorton.com/releases") { content { includeGroup("com.github.bawnorton.mixinsquared") } }
+    maven("https://maven.azureaaron.net/releases") { content { includeGroup("net.azureaaron") } }
+    maven("https://redirector.kotlinlang.org/maven/compose-dev")
+    mavenCentral()
+    google()
+    gradlePluginPortal()
 }
 
 dependencies {
-    fun fapi(vararg modules: String) {
-        for (it in modules) modImplementation(fabricApi.module(it, sc.properties["deps.fabric_api"]))
-    }
-
     minecraft("com.mojang:minecraft:${sc.current.version}")
     loomx.applyMojangMappings()
 
     modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
 
-    modImplementation("dev.isxander:yet-another-config-lib:${property("deps.yacl3")}")
+//    modImplementation("dev.isxander:yet-another-config-lib:${property("deps.yacl3")}")
 
-    fapi("fabric-lifecycle-events-v1", "fabric-resource-loader-v0", "fabric-content-registries-v0")
+    modImplementation("org.polyfrost.oneconfig:${sc.current.version}-fabric:1.0.0-alpha.193")
+    implementation("org.polyfrost.oneconfig:commands:1.0.0-alpha.193")
+    implementation("org.polyfrost.oneconfig:config:1.0.0-alpha.193")
+    implementation("org.polyfrost.oneconfig:config-impl:1.0.0-alpha.193")
+    implementation("org.polyfrost.oneconfig:events:1.0.0-alpha.193")
+    implementation("org.polyfrost.oneconfig:internal:1.0.0-alpha.193")
+    implementation("org.polyfrost.oneconfig:ui:1.0.0-alpha.193")
+    implementation("org.polyfrost.oneconfig:utils:1.0.0-alpha.193")
+    implementation("org.polyfrost.oneconfig:hud:1.0.0-alpha.193")
+
+    modImplementation("net.fabricmc.fabric-api:fabric-api:${sc.properties["deps.fabric_api"] as String}")
 
     modCompileOnly("com.terraformersmc:modmenu:${property("deps.mod_menu")}")
 }

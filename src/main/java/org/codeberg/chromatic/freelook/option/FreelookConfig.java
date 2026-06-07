@@ -1,133 +1,84 @@
 package org.codeberg.chromatic.freelook.option;
 
-import com.google.gson.GsonBuilder;
-import dev.isxander.yacl3.api.NameableEnum;
-import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
-import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import dev.isxander.yacl3.config.v2.api.autogen.*;
-import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.CameraType;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import org.polyfrost.oneconfig.api.config.v1.Config;
+import org.polyfrost.oneconfig.api.config.v1.Property;
+import org.polyfrost.oneconfig.api.config.v1.annotations.Checkbox;
+import org.polyfrost.oneconfig.api.config.v1.annotations.Dropdown;
+import org.polyfrost.oneconfig.api.config.v1.annotations.Slider;
 
-public class FreelookConfig {
-    public static final ConfigClassHandler<FreelookConfig> HANDLER = ConfigClassHandler.createBuilder(FreelookConfig.class)
-            .id(Identifier.fromNamespaceAndPath("freelook", "config"))
-            .serializer(config -> GsonConfigSerializerBuilder.create(config)
-                    .setPath(FabricLoader.getInstance().getConfigDir().resolve("freelook.json5"))
-                    .appendGsonBuilder(GsonBuilder::setPrettyPrinting)
-                    .setJson5(true)
-                    .build())
-            .build();
+public class FreelookConfig extends Config {
+    @Dropdown(
+            title = "Perspective Type",
+            options = { "First Person", "Third Person (Back)", "Third Person (Front)" }
+    )
+    public int perspectiveType = 1;
 
-    @AutoGen(category = "freelook")
-    @EnumCycler
-    @SerialEntry
-    @CustomDescription("yacl3.config.freelook:config.perspectiveType.description")
-    public PerspectiveType perspectiveType = PerspectiveType.THIRD_PERSON_BACK;
+    @Dropdown(
+            title = "Press Mode",
+            options = { "Hold", "Quick Press", "Toggle" }
+    )
+    public int pressMode = 1;
 
-    @AutoGen(category = "freelook")
-    @EnumCycler
-    @SerialEntry
-    @CustomDescription("yacl3.config.freelook:config.pressMode.description")
-    public PressMode pressMode = PressMode.QUICK_PRESS;
+    @Slider(
+            title = "Hold Threshold",
+            min = 50f, max = 1000f, step = 50f
+    )
+    public float holdThreshold = 300f;
 
-    @AutoGen(category = "freelook")
-    @LongSlider(min = 50, max = 1000, step = 50)
-    @SerialEntry
-    @CustomDescription("yacl3.config.freelook:config.holdThreshold.description")
-    // TODO: Depends on pressMode == PressMode.QUICK_PRESS
-    public long holdThreshold = 300;
-
-    @AutoGen(category = "freelook")
-    @TickBox
-    @SerialEntry
-    @CustomDescription("yacl3.config.freelook:config.addToCameraCycle.description")
+    @Checkbox(
+            title = "Add to Camera Cycle"
+    )
     public boolean addToCameraCycle = false;
 
-    @AutoGen(category = "freelook")
-    @EnumCycler
-    @SerialEntry
-    @CustomDescription("yacl3.config.freelook:config.onCycleChange.description")
-    public CycleChangeAction onCycleChange = CycleChangeAction.STOP_FREELOOK;
+    @Dropdown(
+            title = "On Cycle Change",
+            options = { "Cycle and Freelook", "Stop Freelook", "Block Camera Cycle" }
+    )
+    public int onCycleChange = 1;
 
-    @AutoGen(category = "freelook")
-    @TickBox
-    @SerialEntry
-    @CustomImage(value = "textures/descriptions/smooth_camera.webp")
-    @CustomDescription("yacl3.config.freelook:config.smoothCamera.description")
+    @Checkbox(
+            title = "Smooth Camera"
+    )
     public boolean smoothCamera = false;
 
-    @AutoGen(category = "pitch")
-    @MasterTickBox({"invertPitch", "lockPitch"})
-    @SerialEntry
-    @CustomDescription("yacl3.config.freelook:config.pitchEnabled.description")
+    @Checkbox(
+            title = "Enabled",
+            subcategory = "Pitch"
+    )
     public boolean pitchEnabled = true;
 
-    @AutoGen(category = "pitch")
-    @TickBox
-    @SerialEntry
-    @CustomDescription("yacl3.config.freelook:config.invertPitch.description")
-    public boolean invertPitch = false;
+    @Checkbox(
+            title = "Invert",
+            subcategory = "Pitch"
+    )
+    public boolean pitchInvert = false;
 
-    @AutoGen(category = "pitch")
-    @TickBox
-    @SerialEntry
-    @CustomImage(value = "textures/descriptions/pitch_lock.webp")
-    @CustomDescription("yacl3.config.freelook:config.lockPitch.description")
-    public boolean lockPitch = false;
+    @Checkbox(
+            title = "Lock",
+            subcategory = "Pitch"
+    )
+    public boolean pitchLock = false;
 
-    @AutoGen(category = "yaw")
-    @MasterTickBox({"invertYaw"})
-    @SerialEntry
-    @CustomDescription("yacl3.config.freelook:config.yawEnabled.description")
+    @Checkbox(
+            title = "Enabled",
+            subcategory = "Yaw"
+    )
     public boolean yawEnabled = true;
 
-    @AutoGen(category = "yaw")
-    @TickBox
-    @SerialEntry
-    @CustomDescription("yacl3.config.freelook:config.invertYaw.description")
-    public boolean invertYaw = false;
+    @Checkbox(
+            title = "Invert",
+            subcategory = "Yaw"
+    )
+    public boolean yawInvert = false;
 
-    public enum PerspectiveType implements NameableEnum {
-        FIRST_PERSON,
-        THIRD_PERSON_BACK,
-        THIRD_PERSON_FRONT;
+    public FreelookConfig() {
+        super("freelook.json", "freelook", Category.QOL);
 
-        public CameraType asCameraType() {
-            return switch (this) {
-                case FIRST_PERSON -> CameraType.FIRST_PERSON;
-                case THIRD_PERSON_BACK -> CameraType.THIRD_PERSON_BACK;
-                case THIRD_PERSON_FRONT -> CameraType.THIRD_PERSON_FRONT;
-            };
-        }
+        addDependency("pitchInvert", "pitchEnabled");
+        addDependency("pitchLock", "pitchEnabled");
 
-        @Override
-        public Component getDisplayName() {
-            return Component.translatable("yacl3.config.freelook:config.perspectiveType." + name().toLowerCase());
-        }
-    }
+        addDependency("yawInvert", "yawEnabled");
 
-    public enum PressMode implements NameableEnum {
-        HOLD,
-        QUICK_PRESS,
-        TOGGLE;
-
-        @Override
-        public Component getDisplayName() {
-            return Component.translatable("yacl3.config.freelook:config.pressMode." + name().toLowerCase());
-        }
-    }
-
-    public enum CycleChangeAction implements NameableEnum {
-        CHANGE_AND_FREELOOK,
-        STOP_FREELOOK,
-        BLOCK_PERSPECTIVE_CHANGE;
-
-        @Override
-        public Component getDisplayName() {
-            return Component.translatable("yacl3.config.freelook:config.onCycleChange." + name().toLowerCase());
-        }
+        addDependency("holdThreshold", "Quick Press", () -> pressMode == 1 ? Property.Display.DISABLED : Property.Display.SHOWN);
     }
 }
