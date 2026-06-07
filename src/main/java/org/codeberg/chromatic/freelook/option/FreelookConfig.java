@@ -79,6 +79,6 @@ public class FreelookConfig extends Config {
 
         addDependency("yawInvert", "yawEnabled");
 
-        addDependency("holdThreshold", "Quick Press", () -> pressMode == 1 ? Property.Display.DISABLED : Property.Display.SHOWN);
+        addDependency("holdThreshold", "Quick Press", () -> pressMode != 1 ? Property.Display.DISABLED : Property.Display.SHOWN);
     }
 }
