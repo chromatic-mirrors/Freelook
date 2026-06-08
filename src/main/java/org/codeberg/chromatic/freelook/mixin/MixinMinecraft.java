@@ -1,25 +1,27 @@
 package org.codeberg.chromatic.freelook.mixin;
 
+import net.minecraft.client.settings.GameSettings;
 import org.codeberg.chromatic.freelook.handler.CameraCycleHandler;
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.Options;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Minecraft.class)
-public class MixinMinecraft {
-
-    @WrapWithCondition(
-            method = "handleKeybinds",
+abstract class MixinMinecraft {
+    @Redirect(
+            method = "runTick",
             at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/Options;setCameraType(Lnet/minecraft/client/CameraType;)V"
+                    value = "FIELD",
+                    target = "Lnet/minecraft/client/settings/GameSettings;thirdPersonView:I",
+                    opcode = Opcodes.PUTFIELD,
+                    ordinal = 0
             )
     )
-    private boolean overrideCameraCycle(Options instance, CameraType cameraType) {
-        return CameraCycleHandler.shouldOverrideCameraCycle();
+    private void overrideCameraCycle(GameSettings instance, int cameraType) {
+        if (CameraCycleHandler.shouldOverrideCameraCycle()) {
+            instance.thirdPersonView = cameraType;
+        }
     }
-
 }

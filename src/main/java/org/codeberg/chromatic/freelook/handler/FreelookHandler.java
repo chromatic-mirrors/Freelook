@@ -1,5 +1,8 @@
 package org.codeberg.chromatic.freelook.handler;
 
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.util.MathHelper;
 import org.codeberg.chromatic.freelook.Freelook;
 import org.codeberg.chromatic.freelook.util.CameraController;
 import org.codeberg.chromatic.freelook.util.CameraStateTracker;
@@ -17,20 +20,20 @@ public class FreelookHandler {
 
     public boolean enabledServer = true;
 
-    CameraType lastPerspective = CameraType.FIRST_PERSON;
+    int lastPerspective = 0;
     private long pressStartTime = 0;
     final EasingProgressTimer timer = new EasingProgressTimer(650L);
 
-    public void tick(KeyMapping key) {
+    public void tick(KeyBinding key) {
         if (!enabledServer) return;
 
         switch (Freelook.config().pressMode) {
-            case QUICK_PRESS -> handlePressAndHold(key.isDown());
-            case TOGGLE -> {
-                if (key.consumeClick()) toggle();
+            case QUICK_PRESS: handlePressAndHold(key.isKeyDown());
+            case TOGGLE: {
+                if (key.isPressed()) toggle();
             }
-            case HOLD -> {
-                if (key.isDown()) {
+            case HOLD: {
+                if (key.isKeyDown()) {
                     start();
                 } else {
                     stop();
@@ -62,20 +65,21 @@ public class FreelookHandler {
     }
 
     public void start() {
-        LocalPlayer player = Minecraft.getInstance().player;
+        EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
         if (player == null) return;
 
         if (freelookToggled) return;
 
-        lastPerspective = Minecraft.getInstance().options.getCameraType();
+        lastPerspective = Minecraft.getMinecraft().gameSettings.thirdPersonView ;
 
-        CameraController.set(Freelook.config().perspectiveType.asCameraType());
+        CameraController.set(Freelook.config().perspectiveType);
 
         timer.start();
 
-        if (player instanceof CameraStateTracker tracker) {
-            tracker.freelook$setPitch(player.getXRot());
-            tracker.freelook$setYaw(player.getYRot());
+        if (player instanceof CameraStateTracker ) {
+            CameraStateTracker tracker = (CameraStateTracker) player;
+            tracker.freelook$setPitch(player.rotationPitch);
+            tracker.freelook$setYaw(player.rotationYaw);
         }
 
         freelookToggled = true;
@@ -101,6 +105,6 @@ public class FreelookHandler {
     public static float calculateCameraRotation(float currentValue, double delta, boolean invert, boolean lock) {
         delta = (delta * 0.15F * (invert ? -1 : 1));
         float rotation = currentValue + (float) delta;
-        return lock ? Mth.clamp(rotation, -90.0F, 90.0F) : rotation;
+        return lock ? MathHelper.clamp_float(rotation, -90.0F, 90.0F) : rotation;
     }
 }

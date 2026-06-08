@@ -3,7 +3,8 @@
     "package": "org.codeberg.chromatic.freelook.mixin",
     "compatibilityLevel": "JAVA_25",
     "client": [
-        "MixinCamera",
+        "MixinActiveRenderInfo",
+        "MixinEntityRenderer",
         "MixinLocalPlayer",
         "MixinMinecraft"
     ],
