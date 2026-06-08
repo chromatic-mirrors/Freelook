@@ -1,7 +1,7 @@
 mod.id = "freelook"
 mod.name = "Freelook"
 mod.group = "com.codeberg.chromatic"
-mod.version = "2.1.0-alpha.1"
+mod.version = "2.1.0-beta.1"
 
 deps.fabric_loader = "0.19.3"
 loomx.loom_version = "1.16-SNAPSHOT"

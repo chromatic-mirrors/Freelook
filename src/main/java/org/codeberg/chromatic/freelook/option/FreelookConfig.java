@@ -72,7 +72,7 @@ public class FreelookConfig extends Config {
     public boolean yawInvert = false;
 
     public FreelookConfig() {
-        super("freelook.json", "freelook", Category.QOL);
+        super("freelook.json", "Freelook", Category.QOL);
 
         addDependency("pitchInvert", "pitchEnabled");
         addDependency("pitchLock", "pitchEnabled");

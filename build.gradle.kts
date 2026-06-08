@@ -52,21 +52,17 @@ dependencies {
 
     modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
 
-//    modImplementation("dev.isxander:yet-another-config-lib:${property("deps.yacl3")}")
-
-    modImplementation("org.polyfrost.oneconfig:${sc.current.version}-fabric:1.0.0-alpha.193")
-    implementation("org.polyfrost.oneconfig:commands:1.0.0-alpha.193")
-    implementation("org.polyfrost.oneconfig:config:1.0.0-alpha.193")
-    implementation("org.polyfrost.oneconfig:config-impl:1.0.0-alpha.193")
-    implementation("org.polyfrost.oneconfig:events:1.0.0-alpha.193")
-    implementation("org.polyfrost.oneconfig:internal:1.0.0-alpha.193")
-    implementation("org.polyfrost.oneconfig:ui:1.0.0-alpha.193")
-    implementation("org.polyfrost.oneconfig:utils:1.0.0-alpha.193")
-    implementation("org.polyfrost.oneconfig:hud:1.0.0-alpha.193")
+    modImplementation("org.polyfrost.oneconfig:${sc.current.version}-fabric:1.0.0-beta.1")
+    implementation("org.polyfrost.oneconfig:commands:1.0.0-beta.1")
+    implementation("org.polyfrost.oneconfig:config:1.0.0-beta.1")
+    implementation("org.polyfrost.oneconfig:config-impl:1.0.0-beta.1")
+    implementation("org.polyfrost.oneconfig:events:1.0.0-beta.1")
+    implementation("org.polyfrost.oneconfig:internal:1.0.0-beta.1")
+    implementation("org.polyfrost.oneconfig:ui:1.0.0-beta.1")
+    implementation("org.polyfrost.oneconfig:utils:1.0.0-beta.1")
+    implementation("org.polyfrost.oneconfig:hud:1.0.0-beta.1")
 
     modImplementation("net.fabricmc.fabric-api:fabric-api:${sc.properties["deps.fabric_api"] as String}")
-
-    modCompileOnly("com.terraformersmc:modmenu:${property("deps.mod_menu")}")
 }
 
 loom {
@@ -127,7 +123,7 @@ tasks {
 publishMods {
     file = loomx.modJar.get().archiveFile
     changelog = project.rootProject.file("CHANGELOG.md").takeIf { it.exists() }?.readText() ?: "No changelog provided."
-    type = ALPHA
+    type = BETA
     modLoaders.add("fabric")
 
     modrinth {
@@ -136,7 +132,6 @@ publishMods {
 
         minecraftVersions.add(sc.current.version)
 
-        requires("yacl")
-        optional("modmenu")
+        requires("oneconfig")
     }
 }
