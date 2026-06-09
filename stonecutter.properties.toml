@@ -1,6 +1,6 @@
 mod.id = "freelook"
 mod.name = "Freelook"
-mod.group = "com.codeberg.chromatic"
+mod.group = "org.codeberg.chromatic"
 mod.version = "2.1.0-beta.2"
 
 publish.modrinth = "S1v2ASLQ"

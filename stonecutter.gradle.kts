@@ -22,7 +22,10 @@ stonecutter parameters {
             replace("playS2C", "clientboundPlay")
             replace("playC2S", "serverboundPlay")
             replace("displayClientMessage", "sendSystemMessage")
-            replace("LevelRenderState", "GameRenderState")
         }
     }
+}
+
+stonecutter tasks {
+    order("publishModrinth")
 }
