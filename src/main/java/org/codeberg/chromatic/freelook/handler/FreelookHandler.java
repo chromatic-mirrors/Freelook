@@ -1,6 +1,6 @@
 package org.codeberg.chromatic.freelook.handler;
 
-import org.codeberg.chromatic.freelook.Freelook;
+import org.codeberg.chromatic.freelook.option.FreelookConfig;
 import org.codeberg.chromatic.freelook.util.CameraController;
 import org.codeberg.chromatic.freelook.util.CameraStateTracker;
 import org.codeberg.chromatic.freelook.util.EasingProgressTimer;
@@ -26,7 +26,7 @@ public class FreelookHandler {
     public void tick(Minecraft minecraft) {
         if (!enabledServer) return;
 
-        switch (Freelook.config().pressMode) {
+        switch (FreelookConfig.pressMode) {
             case 1 -> handlePressAndHold(ACTIVATION_KEY.isDown());
             case 2 -> {
                 if (ACTIVATION_KEY.consumeClick()) toggle();
@@ -49,7 +49,7 @@ public class FreelookHandler {
             long pressDuration = System.currentTimeMillis() - pressStartTime;
             pressStartTime = 0L;
 
-            if (pressDuration > Freelook.config().holdThreshold) {
+            if (pressDuration > FreelookConfig.holdThreshold) {
                 stop();
             }
         }
@@ -72,7 +72,7 @@ public class FreelookHandler {
         lastPerspective = Minecraft.getInstance().options.getCameraType();
 
         CameraController.set(
-                CameraType.values()[Freelook.config().perspectiveType]
+                CameraType.values()[FreelookConfig.perspectiveType]
         );
 
         timer.start();
@@ -95,7 +95,7 @@ public class FreelookHandler {
     }
 
     public float applySmoothScale(float z) {
-        if (!freelookToggled || timer.isComplete() || !Freelook.config().smoothCamera) return z;
+        if (!freelookToggled || timer.isComplete() || !FreelookConfig.smoothCamera) return z;
 
         float transitionProgress = timer.getProgress();
         float scale = 0.125f + transitionProgress * (1.0f - 0.125f);

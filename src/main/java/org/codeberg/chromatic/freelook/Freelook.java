@@ -13,7 +13,6 @@ import net.minecraft.resources.Identifier;
 import org.codeberg.chromatic.freelook.handler.FreelookHandler;
 import org.codeberg.chromatic.freelook.network.DisableModPayload;
 import org.codeberg.chromatic.freelook.network.HandshakePayload;
-import org.codeberg.chromatic.freelook.option.FreelookConfig;
 import org.lwjgl.glfw.GLFW;
 
 public class Freelook implements ClientModInitializer {
@@ -27,8 +26,6 @@ public class Freelook implements ClientModInitializer {
     public static final KeyMapping ACTIVATION_KEY = KeyMappingHelper.registerKeyMapping(
             new KeyMapping("key.freelook.activate", GLFW.GLFW_KEY_LEFT_ALT, CATEGORY)
     );
-
-    private static FreelookConfig config;
 
     @Override
     public void onInitializeClient() {
@@ -56,11 +53,5 @@ public class Freelook implements ClientModInitializer {
         ClientPlayConnectionEvents.DISCONNECT.register((listener, minecraft) -> {
             FreelookHandler.INSTANCE.enabledServer = true;
         });
-
-        config = new FreelookConfig();
-    }
-
-    public static FreelookConfig config() {
-        return config;
     }
 }

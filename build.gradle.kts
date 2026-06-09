@@ -28,39 +28,24 @@ repositories {
     maven("https://maven.isxander.dev/releases")
     maven("https://maven.terraformersmc.com/")
 
-    maven("https://maven.parchmentmc.org")
     maven("https://repo.polyfrost.org/releases")
     maven("https://repo.polyfrost.org/snapshots")
-    maven("https://maven.gegy.dev/releases")
-    maven("https://maven.logix.dev/snapshots")
-    maven("https://nexus.prsm.wtf/repository/maven-public/maven-repo/releases/")
-    maven("https://repo.hypixel.net/repository/Hypixel/")
-    maven("https://maven.deftu.dev/releases")
     maven("https://maven.fabricmc.net/releases")
-    maven("https://jitpack.io") { content { includeGroupAndSubgroups("com.github") } }
-    maven("https://maven.bawnorton.com/releases") { content { includeGroup("com.github.bawnorton.mixinsquared") } }
-    maven("https://maven.azureaaron.net/releases") { content { includeGroup("net.azureaaron") } }
     maven("https://redirector.kotlinlang.org/maven/compose-dev")
-    mavenCentral()
     google()
-    gradlePluginPortal()
 }
 
 dependencies {
     minecraft("com.mojang:minecraft:${sc.current.version}")
     loomx.applyMojangMappings()
 
+    fun ocfg(vararg modules: String) {
+        for (it in modules) modImplementation("org.polyfrost.oneconfig:${it}:${property("deps.oneconfig") as String}")
+    }
+
     modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
 
-    modImplementation("org.polyfrost.oneconfig:${sc.current.version}-fabric:1.0.0-beta.1")
-    implementation("org.polyfrost.oneconfig:commands:1.0.0-beta.1")
-    implementation("org.polyfrost.oneconfig:config:1.0.0-beta.1")
-    implementation("org.polyfrost.oneconfig:config-impl:1.0.0-beta.1")
-    implementation("org.polyfrost.oneconfig:events:1.0.0-beta.1")
-    implementation("org.polyfrost.oneconfig:internal:1.0.0-beta.1")
-    implementation("org.polyfrost.oneconfig:ui:1.0.0-beta.1")
-    implementation("org.polyfrost.oneconfig:utils:1.0.0-beta.1")
-    implementation("org.polyfrost.oneconfig:hud:1.0.0-beta.1")
+    ocfg("${sc.current.version}-fabric", "commands", "config", "config-impl", "events", "internal", "ui", "utils", "hud")
 
     modImplementation("net.fabricmc.fabric-api:fabric-api:${sc.properties["deps.fabric_api"] as String}")
 }
@@ -73,8 +58,8 @@ loom {
     }
 
     runConfigs.all {
-        vmArgs("-Dmixin.debug.export=true")
-        runDir = "../../run"
+        jvmArguments.add("-Dmixin.debug.export=true")
+        runDirectory.set(File("../../run"))
     }
 }
 
@@ -84,7 +69,6 @@ java {
     sourceCompatibility = requiredJava
 
     toolchain {
-        vendor = JvmVendorSpec.ADOPTIUM
         languageVersion = JavaLanguageVersion.of(requiredJava.majorVersion)
     }
 }
@@ -102,7 +86,6 @@ tasks {
             register("name", "mod.name")
             register("version", "mod.version")
             register("minecraft", "mod.mc_compat")
-            register("yacl3", "deps.yacl3")
         }
 
         filesMatching("fabric.mod.json") { expand(props) }
