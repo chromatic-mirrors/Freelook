@@ -1,16 +1,18 @@
 package org.codeberg.chromatic.freelook.handler;
 
-import org.codeberg.chromatic.freelook.Freelook;
+import org.codeberg.chromatic.freelook.option.FreelookConfig;
 import org.codeberg.chromatic.freelook.util.CameraController;
 import org.codeberg.chromatic.freelook.util.CameraStateTracker;
 import org.codeberg.chromatic.freelook.util.EasingProgressTimer;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.CameraType;
 import net.minecraft.util.Mth;
 
+import static org.codeberg.chromatic.freelook.Freelook.ACTIVATION_KEY;
+
 public class FreelookHandler {
+
     public static final FreelookHandler INSTANCE = new FreelookHandler();
 
     public boolean freelookToggled = false;
@@ -21,16 +23,16 @@ public class FreelookHandler {
     private long pressStartTime = 0;
     final EasingProgressTimer timer = new EasingProgressTimer(650L);
 
-    public void tick(KeyMapping key) {
+    public void tick(Minecraft minecraft) {
         if (!enabledServer) return;
 
-        switch (Freelook.config().pressMode) {
-            case QUICK_PRESS -> handlePressAndHold(key.isDown());
-            case TOGGLE -> {
-                if (key.consumeClick()) toggle();
+        switch (FreelookConfig.pressMode) {
+            case 1 -> handlePressAndHold(ACTIVATION_KEY.isDown());
+            case 2 -> {
+                if (ACTIVATION_KEY.consumeClick()) toggle();
             }
-            case HOLD -> {
-                if (key.isDown()) {
+            case 0 -> {
+                if (ACTIVATION_KEY.isDown()) {
                     start();
                 } else {
                     stop();
@@ -47,7 +49,7 @@ public class FreelookHandler {
             long pressDuration = System.currentTimeMillis() - pressStartTime;
             pressStartTime = 0L;
 
-            if (pressDuration > Freelook.config().holdThreshold) {
+            if (pressDuration > FreelookConfig.holdThreshold) {
                 stop();
             }
         }
@@ -69,7 +71,9 @@ public class FreelookHandler {
 
         lastPerspective = Minecraft.getInstance().options.getCameraType();
 
-        CameraController.set(Freelook.config().perspectiveType.asCameraType());
+        CameraController.set(
+                CameraType.values()[FreelookConfig.perspectiveType]
+        );
 
         timer.start();
 
@@ -91,7 +95,7 @@ public class FreelookHandler {
     }
 
     public float applySmoothScale(float z) {
-        if (!freelookToggled || timer.isComplete() || !Freelook.config().smoothCamera) return z;
+        if (!freelookToggled || timer.isComplete() || !FreelookConfig.smoothCamera) return z;
 
         float transitionProgress = timer.getProgress();
         float scale = 0.125f + transitionProgress * (1.0f - 0.125f);
@@ -103,4 +107,5 @@ public class FreelookHandler {
         float rotation = currentValue + (float) delta;
         return lock ? Mth.clamp(rotation, -90.0F, 90.0F) : rotation;
     }
+
 }

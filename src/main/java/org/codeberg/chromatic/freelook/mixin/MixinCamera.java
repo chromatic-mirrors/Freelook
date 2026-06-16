@@ -5,7 +5,6 @@ import org.codeberg.chromatic.freelook.handler.FreelookHandler;
 import org.codeberg.chromatic.freelook.util.CameraStateTracker;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.client.Camera;
-import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,14 +15,22 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 public abstract class MixinCamera {
 
     @Shadow
-    private @Nullable Entity entity;
+    private Entity entity;
 
     @ModifyArgs(
+            /*? if >=26.1 {*/
             method = "alignWithEntity",
+            /*?} else */
+            //method = "setup",
+            /**/
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/Camera;setRotation(FF)V",
+                    /*? if >=1.21.2 {*/
                     ordinal = 1
+                    /*?} else */
+                    //ordinal = 0
+                    /**/
             )
     )
     private void modifyRotationArgs(Args args) {
@@ -38,10 +45,12 @@ public abstract class MixinCamera {
         }
     }
 
-    @ModifyReturnValue(method = "getMaxZoom", at = @At("RETURN"))
+    @ModifyReturnValue(
+            method = "getMaxZoom",
+            at = @At("RETURN")
+    )
     private float adjustClipReturn(float original) {
         return FreelookHandler.INSTANCE.applySmoothScale(original);
     }
-
 
 }

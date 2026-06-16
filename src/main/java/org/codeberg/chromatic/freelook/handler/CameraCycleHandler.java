@@ -1,39 +1,28 @@
 package org.codeberg.chromatic.freelook.handler;
 
-import net.minecraft.client.CameraType;
-import net.minecraft.client.Minecraft;
-import org.codeberg.chromatic.freelook.Freelook;
+import org.codeberg.chromatic.freelook.option.FreelookConfig;
 
 public class CameraCycleHandler {
     public static boolean hasCycledFreelook = false;
 
     public static boolean shouldOverrideCameraCycle() {
-        switch (Freelook.config().onCycleChange) {
-            case STOP_FREELOOK -> FreelookHandler.INSTANCE.freelookToggled = false;
-            case BLOCK_PERSPECTIVE_CHANGE -> {
-                if (FreelookHandler.INSTANCE.freelookToggled && !hasCycledFreelook) {
+        boolean freelook = FreelookHandler.INSTANCE.freelookToggled;
+
+        switch (FreelookConfig.onCycleChange) {
+            case 0:
+                break;
+            case 1:
+                if (freelook) {
+                    FreelookHandler.INSTANCE.stop();
+                }
+                break;
+            case 2:
+                if (freelook) {
                     return false;
                 }
-            }
-            case CHANGE_AND_FREELOOK -> {}
-        }
-
-        if (Freelook.config().addToCameraCycle) {
-            if (hasCycledFreelook) {
-                hasCycledFreelook = false;
-                FreelookHandler.INSTANCE.stop();
-            } else if (Minecraft.getInstance().options.getCameraType() == getLastPerspectiveType()) {
-                FreelookHandler.INSTANCE.start();
-                hasCycledFreelook = true;
-                return false;
-            }
+                break;
         }
 
         return true;
-    }
-
-    public static CameraType getLastPerspectiveType() {
-        CameraType[] values = CameraType.values();
-        return values[values.length - 1];
     }
 }

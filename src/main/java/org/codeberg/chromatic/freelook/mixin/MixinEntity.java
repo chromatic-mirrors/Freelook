@@ -1,7 +1,7 @@
 package org.codeberg.chromatic.freelook.mixin;
 
-import org.codeberg.chromatic.freelook.Freelook;
 import org.codeberg.chromatic.freelook.handler.FreelookHandler;
+import org.codeberg.chromatic.freelook.option.FreelookConfig;
 import org.codeberg.chromatic.freelook.util.CameraStateTracker;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,15 +19,15 @@ public class MixinEntity {
     )
     public void rotate(double xo, double yo, CallbackInfo ci) {
         if (FreelookHandler.INSTANCE.freelookToggled && this instanceof CameraStateTracker tracker) {
-            if (Freelook.config().pitchEnabled) tracker.freelook$setPitch(
+            if (FreelookConfig.Pitch.enabled) tracker.freelook$setPitch(
                     FreelookHandler.calculateCameraRotation(
-                            tracker.freelook$getPitch(), yo, Freelook.config().invertPitch, Freelook.config().lockPitch
+                            tracker.freelook$getPitch(), yo, FreelookConfig.Pitch.invert, FreelookConfig.Pitch.lock
                     )
             );
 
-            if (Freelook.config().yawEnabled) tracker.freelook$setYaw(
+            if (FreelookConfig.Yaw.enabled) tracker.freelook$setYaw(
                     FreelookHandler.calculateCameraRotation(
-                            tracker.freelook$getYaw(), xo, Freelook.config().invertYaw, false
+                            tracker.freelook$getYaw(), xo, FreelookConfig.Yaw.invert, false
                     )
             );
 
