@@ -5,6 +5,8 @@ import org.polyfrost.oneconfig.api.config.v1.Property;
 import org.polyfrost.oneconfig.api.config.v1.annotations.*;
 
 public class FreelookConfig extends Config {
+    public static final FreelookConfig INSTANCE = new FreelookConfig();
+
     @Dropdown(
             title = "Perspective Type",
             options = { "First Person", "Third Person (Back)", "Third Person (Front)" }
@@ -74,11 +76,7 @@ public class FreelookConfig extends Config {
         public static boolean invert = false;
     }
 
-    static {
-        new FreelookConfig(); // init
-    }
-
-    public FreelookConfig() {
+    private FreelookConfig() {
         super("freelook.json", "Freelook", Category.QOL);
 
         addDependency("Pitch.invert", "Pitch.enabled");

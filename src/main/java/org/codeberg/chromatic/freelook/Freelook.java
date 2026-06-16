@@ -13,6 +13,7 @@ import net.minecraft.resources.Identifier;
 import org.codeberg.chromatic.freelook.handler.FreelookHandler;
 import org.codeberg.chromatic.freelook.network.DisableModPayload;
 import org.codeberg.chromatic.freelook.network.HandshakePayload;
+import org.codeberg.chromatic.freelook.option.FreelookConfig;
 import org.lwjgl.glfw.GLFW;
 
 public class Freelook implements ClientModInitializer {
@@ -53,5 +54,7 @@ public class Freelook implements ClientModInitializer {
         ClientPlayConnectionEvents.DISCONNECT.register((listener, minecraft) -> {
             FreelookHandler.INSTANCE.enabledServer = true;
         });
+
+        FreelookConfig.INSTANCE.preload();
     }
 }

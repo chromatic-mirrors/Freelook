@@ -14,9 +14,6 @@ val requiredJava: JavaVersion = when {
     else -> JavaVersion.VERSION_1_8
 }
 
-val compatibleVersions: List<String> = sc.properties.rawOrNull("mod", "mc_releases")
-    ?.asList().orEmpty().map { it.toString() }
-
 repositories {
     fun strictMaven(url: String, alias: String, vararg groups: String) = exclusiveContent {
         forRepository { maven(url) { name = alias } }
@@ -24,9 +21,6 @@ repositories {
     }
     strictMaven("https://www.cursemaven.com", "CurseForge", "curse.maven")
     strictMaven("https://api.modrinth.com/maven", "Modrinth", "maven.modrinth")
-
-    maven("https://maven.isxander.dev/releases")
-    maven("https://maven.terraformersmc.com/")
 
     maven("https://repo.polyfrost.org/releases")
     maven("https://repo.polyfrost.org/snapshots")
@@ -95,6 +89,7 @@ tasks {
     }
 
     register<Copy>("buildAndCollect") {
+        description = "Build & Collect"
         group = "build"
 
         from(loomx.modJar.map { it.archiveFile }, loomx.modSourcesJar.map { it.archiveFile })
@@ -106,14 +101,24 @@ tasks {
 publishMods {
     file = loomx.modJar.get().archiveFile
     changelog = project.rootProject.file("CHANGELOG.md").takeIf { it.exists() }?.readText() ?: "No changelog provided."
-    type = BETA
+
+    val projectVersion = project.version.toString().lowercase()
+    type = when {
+        "beta" in projectVersion -> BETA
+        "alpha" in projectVersion -> ALPHA
+        else -> STABLE
+    }
+
     modLoaders.add("fabric")
+
+    val compatibleVersions: List<String> = sc.properties.rawOrNull("mod", "mc_releases")
+        ?.asList().orEmpty().map { it.toString() }
 
     modrinth {
         projectId = property("publish.modrinth").toString()
         accessToken = findProperty("modrinth.token").toString()
 
-        minecraftVersions.add(sc.current.version)
+        minecraftVersions.addAll(compatibleVersions)
 
         requires("oneconfig")
     }
