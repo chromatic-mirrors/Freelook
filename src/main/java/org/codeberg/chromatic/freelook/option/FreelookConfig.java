@@ -25,11 +25,6 @@ public class FreelookConfig extends Config {
     )
     public static float holdThreshold = 300f;
 
-//    @Switch(
-//            title = "Add to Camera Cycle"
-//    )
-//    public static boolean addToCameraCycle = false;
-
     @Dropdown(
             title = "On Cycle Change",
             options = { "Cycle and Freelook", "Stop Freelook", "Block Camera Cycle" }
@@ -45,9 +40,7 @@ public class FreelookConfig extends Config {
             title = "Pitch"
     )
     public static class Pitch {
-        @Switch(
-                title = "Enabled"
-        )
+        @Include
         public static boolean enabled = true;
 
         @Switch(
@@ -65,9 +58,7 @@ public class FreelookConfig extends Config {
             title = "Yaw"
     )
     public static class Yaw {
-        @Switch(
-                title = "Enabled"
-        )
+        @Include
         public static boolean enabled = true;
 
         @Switch(
