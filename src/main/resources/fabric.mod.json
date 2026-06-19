@@ -30,7 +30,8 @@
     ],
     "depends": {
         "minecraft": "${minecraft}",
-        "fabricloader": ">=0.17",
+        "fabricloader": ">=0.16",
+        "fabric-api": "*",
         "oneconfigv1": ">=1.0.0-beta.1"
     },
     "conflicts": {

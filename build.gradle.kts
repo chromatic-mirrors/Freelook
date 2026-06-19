@@ -22,6 +22,12 @@ repositories {
     strictMaven("https://www.cursemaven.com", "CurseForge", "curse.maven")
     strictMaven("https://api.modrinth.com/maven", "Modrinth", "maven.modrinth")
 
+    maven(url = "https://central.sonatype.com/repository/maven-snapshots/") {
+        name = "central-snapshots"
+        mavenContent { snapshotsOnly() }
+    }
+    mavenCentral()
+
     maven("https://repo.polyfrost.org/releases")
     maven("https://repo.polyfrost.org/snapshots")
     maven("https://maven.fabricmc.net/releases")
@@ -121,5 +127,6 @@ publishMods {
         minecraftVersions.addAll(compatibleVersions)
 
         requires("oneconfig")
+        requires("fabric-api")
     }
 }
