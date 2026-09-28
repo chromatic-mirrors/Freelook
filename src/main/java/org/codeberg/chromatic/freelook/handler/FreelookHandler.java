@@ -9,8 +9,6 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.CameraType;
 import net.minecraft.util.Mth;
 
-import static org.codeberg.chromatic.freelook.Freelook.ACTIVATION_KEY;
-
 public class FreelookHandler {
 
     public static final FreelookHandler INSTANCE = new FreelookHandler();
@@ -21,24 +19,33 @@ public class FreelookHandler {
 
     CameraType lastPerspective = CameraType.FIRST_PERSON;
     private long pressStartTime = 0;
+    private boolean keyDown = false;
+    private boolean wasKeyDown = false;
     final EasingProgressTimer timer = new EasingProgressTimer(650L);
 
     public void tick(Minecraft minecraft) {
+        boolean pressed = keyDown && !wasKeyDown;
+        wasKeyDown = keyDown;
+
         if (!enabledServer) return;
 
         switch (FreelookConfig.pressMode) {
-            case 1 -> handlePressAndHold(ACTIVATION_KEY.isDown());
+            case 1 -> handlePressAndHold(keyDown);
             case 2 -> {
-                if (ACTIVATION_KEY.consumeClick()) toggle();
+                if (pressed) toggle();
             }
             case 0 -> {
-                if (ACTIVATION_KEY.isDown()) {
+                if (keyDown) {
                     start();
                 } else {
                     stop();
                 }
             }
         }
+    }
+
+    public void setKeyDown(boolean down) {
+        keyDown = down;
     }
 
     public void handlePressAndHold(boolean pressed) {

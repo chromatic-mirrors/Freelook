@@ -21,6 +21,7 @@ repositories {
     }
     strictMaven("https://www.cursemaven.com", "CurseForge", "curse.maven")
     strictMaven("https://api.modrinth.com/maven", "Modrinth", "maven.modrinth")
+    strictMaven("https://maven.terraformersmc.com/releases", "Terraformers", "com.terraformersmc")
 
     maven(url = "https://central.sonatype.com/repository/maven-snapshots/") {
         name = "central-snapshots"

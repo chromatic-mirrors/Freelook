@@ -1,11 +1,33 @@
 package org.codeberg.chromatic.freelook.option;
 
+import com.mojang.blaze3d.platform.InputConstants;
+import net.fabricmc.loader.api.FabricLoader;
+import org.codeberg.chromatic.freelook.handler.FreelookHandler;
+
 import org.polyfrost.oneconfig.api.config.v1.Config;
 import org.polyfrost.oneconfig.api.config.v1.Property;
 import org.polyfrost.oneconfig.api.config.v1.annotations.*;
+import org.polyfrost.oneconfig.api.ui.v1.keybind.KeybindHelper;
+import org.polyfrost.oneconfig.api.ui.v1.keybind.KeybindManager;
+import org.polyfrost.oneconfig.api.ui.v1.keybind.OneConfigKeybind;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.stream.Stream;
 
 public class FreelookConfig extends Config {
     public static final FreelookConfig INSTANCE = new FreelookConfig();
+
+    @Keybind(
+            title = "Activate Freelook"
+    )
+    public static OneConfigKeybind activationKey = KeybindHelper.builder()
+            .key(InputConstants.KEY_LALT)
+            .action(FreelookHandler.INSTANCE::setKeyDown)
+            .build();
+
+    @Include
+    public static boolean migratedVanillaKeybind = false;
 
     @Dropdown(
             title = "Perspective Type",
@@ -65,6 +87,29 @@ public class FreelookConfig extends Config {
                 title = "Invert"
         )
         public static boolean invert = false;
+    }
+
+    public void migrateVanillaKeybind() {
+        if (migratedVanillaKeybind) return;
+        migratedVanillaKeybind = true;
+
+        try (Stream<String> lines = Files.lines(FabricLoader.getInstance().getGameDir().resolve("options.txt"))) {
+            lines.filter(line -> line.startsWith("key_key.freelook.activate:")).findFirst().ifPresent(line -> {
+                String name = line.substring(line.indexOf(':') + 1);
+                if (name.startsWith("scancode.")) return;
+
+                InputConstants.Key key = InputConstants.getKey(name);
+
+                int[] code = key.getValue() == InputConstants.UNKNOWN.getValue() ? null : new int[]{key.getValue()};
+                boolean mouse = key.getType() == InputConstants.Type.MOUSE;
+                activationKey.setKeyCodes(mouse ? null : code);
+                activationKey.setMouseBtns(mouse ? code : null);
+                KeybindManager.refreshMinecraftBinding(activationKey);
+            });
+        } catch (IOException | RuntimeException ignored) {
+        }
+
+        save();
     }
 
     private FreelookConfig() {

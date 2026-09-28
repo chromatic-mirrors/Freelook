@@ -2,31 +2,17 @@ package org.codeberg.chromatic.freelook;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
 import org.codeberg.chromatic.freelook.handler.FreelookHandler;
 import org.codeberg.chromatic.freelook.network.DisableModPayload;
 import org.codeberg.chromatic.freelook.network.HandshakePayload;
 import org.codeberg.chromatic.freelook.option.FreelookConfig;
-import org.lwjgl.glfw.GLFW;
 
 public class Freelook implements ClientModInitializer {
-
-    //? if >=1.21.9 {
-    private static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(Identifier.fromNamespaceAndPath("freelook", "freelook"));
-    //?} else {
-    /*private static final String CATEGORY = "category.freelook.freelook";
-    *///?}
-
-    public static final KeyMapping ACTIVATION_KEY = KeyMappingHelper.registerKeyMapping(
-            new KeyMapping("key.freelook.activate", GLFW.GLFW_KEY_LEFT_ALT, CATEGORY)
-    );
 
     @Override
     public void onInitializeClient() {
@@ -56,5 +42,6 @@ public class Freelook implements ClientModInitializer {
         });
 
         FreelookConfig.INSTANCE.preload();
+        FreelookConfig.INSTANCE.migrateVanillaKeybind();
     }
 }
