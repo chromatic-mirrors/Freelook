@@ -3,6 +3,8 @@
     "package": "org.codeberg.chromatic.freelook.mixin",
     "compatibilityLevel": "${java}",
     "client": [
+        "legacy.MixinEntityRenderDispatcher",
+        "legacy.MixinGameRenderer",
         "MixinCamera",
         "MixinEntity",
         "MixinLocalPlayer",

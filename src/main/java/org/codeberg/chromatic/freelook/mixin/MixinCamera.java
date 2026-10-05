@@ -1,5 +1,6 @@
 package org.codeberg.chromatic.freelook.mixin;
 
+//? if >1.8.9 {
 import net.minecraft.world.entity.Entity;
 import org.codeberg.chromatic.freelook.handler.FreelookHandler;
 import org.codeberg.chromatic.freelook.util.CameraStateTracker;
@@ -54,3 +55,41 @@ public abstract class MixinCamera {
     }
 
 }
+//?} else {
+/*import net.minecraft.client.render.Camera;
+import net.minecraft.entity.living.player.PlayerEntity;
+import org.codeberg.chromatic.freelook.handler.FreelookHandler;
+import org.objectweb.asm.Opcodes;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
+
+@Mixin(Camera.class)
+public abstract class MixinCamera {
+
+    @Redirect(
+            method = "setup",
+            at = @At(
+                    value = "FIELD",
+                    target = "Lnet/minecraft/entity/living/player/PlayerEntity;pitch:F",
+                    opcode = Opcodes.GETFIELD
+            )
+    )
+    private static float modifyPitch(PlayerEntity player) {
+        return FreelookHandler.INSTANCE.cameraPitch(player, player.pitch);
+    }
+
+    @Redirect(
+            method = "setup",
+            at = @At(
+                    value = "FIELD",
+                    target = "Lnet/minecraft/entity/living/player/PlayerEntity;yaw:F",
+                    opcode = Opcodes.GETFIELD
+            )
+    )
+    private static float modifyYaw(PlayerEntity player) {
+        return FreelookHandler.INSTANCE.cameraYaw(player, player.yaw);
+    }
+
+}
+*///?}

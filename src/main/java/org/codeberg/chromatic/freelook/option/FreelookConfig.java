@@ -58,6 +58,11 @@ public class FreelookConfig extends Config {
     )
     public static boolean smoothCamera = true;
 
+    @Switch(
+            title = "Disable on Hypixel"
+    )
+    public static boolean disableOnHypixel = true;
+
     @Accordion(
             title = "Pitch"
     )

@@ -6,8 +6,10 @@ import org.codeberg.chromatic.freelook.util.CameraStateTracker;
 import org.codeberg.chromatic.freelook.util.EasingProgressTimer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.CameraType;
 import net.minecraft.util.Mth;
+//? if 1.8.9
+//import net.minecraft.world.entity.Entity;
+import org.polyfrost.oneconfig.api.hypixel.v1.HypixelUtils;
 
 public class FreelookHandler {
 
@@ -17,7 +19,7 @@ public class FreelookHandler {
 
     public boolean enabledServer = true;
 
-    CameraType lastPerspective = CameraType.FIRST_PERSON;
+    int lastPerspective = 0;
     private long pressStartTime = 0;
     private boolean keyDown = false;
     private boolean wasKeyDown = false;
@@ -27,7 +29,10 @@ public class FreelookHandler {
         boolean pressed = keyDown && !wasKeyDown;
         wasKeyDown = keyDown;
 
-        if (!enabledServer) return;
+        if (!enabledServer || HypixelUtils.isHypixel() && FreelookConfig.disableOnHypixel) {
+            stop();
+            return;
+        }
 
         switch (FreelookConfig.pressMode) {
             case 1 -> handlePressAndHold(keyDown);
@@ -76,17 +81,20 @@ public class FreelookHandler {
 
         if (freelookToggled) return;
 
-        lastPerspective = Minecraft.getInstance().options.getCameraType();
+        lastPerspective = CameraController.get();
 
-        CameraController.set(
-                CameraType.values()[FreelookConfig.perspectiveType]
-        );
+        CameraController.set(FreelookConfig.perspectiveType);
 
         timer.start();
 
         if (player instanceof CameraStateTracker tracker) {
+            //? if >1.8.9 {
             tracker.freelook$setPitch(player.getXRot());
             tracker.freelook$setYaw(player.getYRot());
+            //?} else {
+            /*tracker.freelook$setPitch(player.pitch);
+            tracker.freelook$setYaw(player.yaw);
+            *///?}
         }
 
         freelookToggled = true;
@@ -108,6 +116,16 @@ public class FreelookHandler {
         float scale = 0.125f + transitionProgress * (1.0f - 0.125f);
         return z * scale;
     }
+
+    //? if 1.8.9 {
+    /*public float cameraYaw(Entity entity, float vanilla) {
+        return freelookToggled && entity instanceof CameraStateTracker tracker ? tracker.freelook$getYaw() : vanilla;
+    }
+
+    public float cameraPitch(Entity entity, float vanilla) {
+        return freelookToggled && entity instanceof CameraStateTracker tracker ? tracker.freelook$getPitch() : vanilla;
+    }
+    *///?}
 
     public static float calculateCameraRotation(float currentValue, double delta, boolean invert, boolean lock) {
         delta = (delta * 0.15F * (invert ? -1 : 1));

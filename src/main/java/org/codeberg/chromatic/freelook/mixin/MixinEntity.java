@@ -12,12 +12,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Entity.class)
 public class MixinEntity {
 
+    //? if >1.8.9 {
     @Inject(
             method = "turn",
             at = @At("HEAD"),
             cancellable = true
     )
     public void rotate(double xo, double yo, CallbackInfo ci) {
+    //?} else {
+    /*@Inject(
+            method = "updateLocalPlayerCamera",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    public void rotate(float xo, float yo, CallbackInfo ci) {
+        yo = -yo;
+    *///?}
         if (FreelookHandler.INSTANCE.freelookToggled && this instanceof CameraStateTracker tracker) {
             if (FreelookConfig.Pitch.enabled) tracker.freelook$setPitch(
                     FreelookHandler.calculateCameraRotation(

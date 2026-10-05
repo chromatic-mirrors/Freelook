@@ -1,13 +1,21 @@
 mod.id = "freelook"
 mod.name = "Freelook"
 mod.group = "org.codeberg.chromatic"
-mod.version = "2.1.0"
+mod.version = "2.1.1"
 
 publish.modrinth = "S1v2ASLQ"
 
 deps.fabric_loader = "0.19.3"
 deps.oneconfig = "1.2.7"
 loomx.loom_version = "1.17-SNAPSHOT"
+
+["1.8.9"]
+mod.mc_compat = "1.8.9"
+mod.mc_releases = ["1.8.9"]
+
+deps.feather_build = "2"
+deps.osl_core = "0.10.0+mc14w27a-mc1.14.4"
+deps.osl_networking = "0.10.0+mc13w41a-mc18w30b"
 
 ["1.21.1"]
 mod.mc_compat = "1.21.1"

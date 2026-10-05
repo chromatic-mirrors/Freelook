@@ -9,26 +9,26 @@ import org.spongepowered.asm.mixin.Unique;
 public class MixinLocalPlayer implements CameraStateTracker {
 
     @Unique
-    private float pitch, yaw;
+    private float freelook$pitch, freelook$yaw;
 
     @Override
     public float freelook$getPitch() {
-        return pitch;
+        return freelook$pitch;
     }
 
     @Override
     public float freelook$getYaw() {
-        return yaw;
+        return freelook$yaw;
     }
 
     @Override
     public void freelook$setPitch(float pitch) {
-        this.pitch = pitch;
+        this.freelook$pitch = pitch;
     }
 
     @Override
     public void freelook$setYaw(float yaw) {
-        this.yaw = yaw;
+        this.freelook$yaw = yaw;
     }
 
 }
