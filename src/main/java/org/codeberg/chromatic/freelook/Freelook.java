@@ -83,6 +83,7 @@ public class Freelook implements ClientModInitializer {
 
         FreelookConfig.INSTANCE.preload();
         FreelookConfig.INSTANCE.migrateVanillaKeybind();
+        FreelookConfig.INSTANCE.migrateDefaults();
     }
 
     //? if 1.8.9 {

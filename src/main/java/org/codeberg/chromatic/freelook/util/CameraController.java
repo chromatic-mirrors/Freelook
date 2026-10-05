@@ -16,13 +16,16 @@ public class CameraController {
 
     public static void set(int type) {
         if (get() != type) restore(type);
+        activePerspective = type;
     }
 
     public static void restore(int type) {
         activePerspective = type;
         //? if >1.8.9 {
         Minecraft.getInstance().options.setCameraType(CameraType.values()[type]);
-        //?} else
-        //Minecraft.getInstance().options.perspective = type;
+        //?} else {
+        /*Minecraft.getInstance().options.perspective = type;
+        Minecraft.getInstance().worldRenderer.onViewChanged();
+        *///?}
     }
 }

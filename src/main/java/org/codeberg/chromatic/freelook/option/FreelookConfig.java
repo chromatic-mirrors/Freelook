@@ -13,6 +13,7 @@ import org.polyfrost.oneconfig.api.ui.v1.keybind.OneConfigKeybind;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class FreelookConfig extends Config {
@@ -22,12 +23,14 @@ public class FreelookConfig extends Config {
             title = "Activate Freelook"
     )
     public static OneConfigKeybind activationKey = KeybindHelper.builder()
-            .key(InputConstants.KEY_LALT)
             .action(FreelookHandler.INSTANCE::setKeyDown)
             .build();
 
     @Include
     public static boolean migratedVanillaKeybind = false;
+
+    @Include
+    public static boolean migratedDefaults = false;
 
     @Dropdown(
             title = "Perspective Type",
@@ -39,7 +42,7 @@ public class FreelookConfig extends Config {
             title = "Press Mode",
             options = { "Hold", "Quick Press", "Toggle" }
     )
-    public static int pressMode = 1;
+    public static int pressMode = 0;
 
     @Slider(
             title = "Hold Threshold",
@@ -112,6 +115,21 @@ public class FreelookConfig extends Config {
                 KeybindManager.refreshMinecraftBinding(activationKey);
             });
         } catch (IOException | RuntimeException ignored) {
+        }
+
+        save();
+    }
+
+    public void migrateDefaults() {
+        if (migratedDefaults) return;
+        migratedDefaults = true;
+
+        if (pressMode == 1) pressMode = 0;
+
+        int[] mouse = activationKey.getMouseBtns();
+        if (Arrays.equals(activationKey.getKeyCodes(), new int[]{InputConstants.KEY_LALT}) && (mouse == null || mouse.length == 0)) {
+            activationKey.setKeyCodes(null);
+            KeybindManager.refreshMinecraftBinding(activationKey);
         }
 
         save();

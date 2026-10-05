@@ -34,6 +34,8 @@ public class FreelookHandler {
             return;
         }
 
+        handlePerspectiveChange();
+
         switch (FreelookConfig.pressMode) {
             case 1 -> handlePressAndHold(keyDown);
             case 2 -> {
@@ -46,6 +48,20 @@ public class FreelookHandler {
                     stop();
                 }
             }
+        }
+    }
+
+    private void handlePerspectiveChange() {
+        int perspective = CameraController.get();
+        if (!freelookToggled || perspective == CameraController.activePerspective) return;
+
+        switch (FreelookConfig.onCycleChange) {
+            case 0 -> CameraController.activePerspective = perspective;
+            case 1 -> {
+                stop();
+                CameraController.restore(perspective);
+            }
+            case 2 -> CameraController.restore(CameraController.activePerspective);
         }
     }
 

@@ -5,6 +5,7 @@
     "client": [
         "legacy.MixinEntityRenderDispatcher",
         "legacy.MixinGameRenderer",
+        "legacy.MixinWorldRenderer",
         "MixinCamera",
         "MixinEntity",
         "MixinLocalPlayer",
