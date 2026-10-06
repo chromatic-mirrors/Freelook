@@ -41,6 +41,9 @@ public class MixinEntity {
                     )
             );
 
+            //? if 1.8.9
+            //net.minecraft.client.Minecraft.getInstance().worldRenderer.onViewChanged();
+
             ci.cancel();
         }
     }
