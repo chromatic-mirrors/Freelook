@@ -1,2 +1,2 @@
-## 2.2.1
-- Fixed culling issues when paired with Argentum on 1.8.9
+## 2.2.2
+- Remove leftover developer option
