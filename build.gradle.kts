@@ -137,7 +137,8 @@ tasks {
         val mixinJava = "JAVA_${requiredJava.majorVersion}"
         filesMatching("*.mixins.json") {
             expand("java" to mixinJava)
-            if (!legacy) filter { line -> if ("\"legacy." in line) "" else line }
+            val skipped = if (legacy) "\"modern." else "\"legacy."
+            filter { line -> if (skipped in line) "" else line }
         }
     }
 

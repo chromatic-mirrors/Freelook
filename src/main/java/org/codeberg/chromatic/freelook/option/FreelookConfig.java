@@ -61,6 +61,18 @@ public class FreelookConfig extends Config {
     )
     public static boolean smoothCamera = true;
 
+    @Slider(
+            title = "Sensitivity (%)",
+            min = 10f, max = 200f, step = 5f
+    )
+    public static float sensitivity = 100f;
+
+    @Slider(
+            title = "Cinematic Camera (%)",
+            min = 0f, max = 100f, step = 5f
+    )
+    public static float cinematicCamera = 0f;
+
     @Accordion(
             title = "Pitch"
     )

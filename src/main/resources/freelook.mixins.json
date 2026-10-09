@@ -6,6 +6,7 @@
         "legacy.MixinEntityRenderDispatcher",
         "legacy.MixinGameRenderer",
         "legacy.MixinWorldRenderer",
+        "modern.MixinMouseHandler",
         "MixinCamera",
         "MixinEntity",
         "MixinLocalPlayer",

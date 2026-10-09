@@ -29,6 +29,7 @@ import org.polyfrost.oneconfig.api.event.v1.events.TickEvent;
 
 import java.nio.charset.StandardCharsets;
 *///?}
+import java.util.Locale;
 
 public class Freelook implements ClientModInitializer {
 
@@ -53,6 +54,8 @@ public class Freelook implements ClientModInitializer {
         });
 
         ClientPlayConnectionEvents.JOIN.register((listener, sender, minecraft) -> {
+            if (minecraft.getCurrentServer() != null && rejectsHandshake(minecraft.getCurrentServer().ip)) return;
+
             sender.sendPacket(new HandshakePayload());
         });
 
@@ -76,6 +79,9 @@ public class Freelook implements ClientModInitializer {
         ClientConnectionEvents.LOGIN.register(context -> {
             FreelookHandler.INSTANCE.enabledServer = true;
 
+            Minecraft minecraft = Minecraft.getInstance();
+            if (minecraft.getCurrentServerEntry() != null && rejectsHandshake(minecraft.getCurrentServerEntry().ip)) return;
+
             ClientPlayNetworking.sendNoCheck(REGISTER, "freelook:disable".getBytes(StandardCharsets.UTF_8));
             ClientPlayNetworking.sendNoCheck(HandshakePayload.ID, new HandshakePayload());
         });
@@ -84,6 +90,19 @@ public class Freelook implements ClientModInitializer {
         FreelookConfig.INSTANCE.preload();
         FreelookConfig.INSTANCE.migrateVanillaKeybind();
         FreelookConfig.INSTANCE.migrateDefaults();
+    }
+
+    // Shotbow allows freelook but kicks anyone who sends a payload it doesn't recognise.
+    private static boolean rejectsHandshake(String address) {
+        String host = address.toLowerCase(Locale.ROOT);
+        int port = host.lastIndexOf(':');
+        if (port != -1) host = host.substring(0, port);
+        if (host.endsWith(".")) host = host.substring(0, host.length() - 1);
+
+        for (String domain : new String[]{"shotbow.com", "shotbow.net"}) {
+            if (host.equals(domain) || host.endsWith("." + domain)) return true;
+        }
+        return false;
     }
 
     //? if 1.8.9 {

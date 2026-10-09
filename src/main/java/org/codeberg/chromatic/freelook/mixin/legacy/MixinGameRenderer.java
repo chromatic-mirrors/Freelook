@@ -1,7 +1,8 @@
 package org.codeberg.chromatic.freelook.mixin.legacy;
 
 //? if 1.8.9 {
-/*import net.minecraft.client.render.GameRenderer;
+/*import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.world.entity.Entity;
 import org.codeberg.chromatic.freelook.handler.FreelookHandler;
 import org.objectweb.asm.Opcodes;
@@ -72,6 +73,30 @@ public abstract class MixinGameRenderer {
     )
     private float adjustCameraDistance(float z) {
         return FreelookHandler.INSTANCE.applySmoothScale(z);
+    }
+
+    @ModifyExpressionValue(
+            method = {"render(FJ)V", "tick"},
+            at = @At(
+                    value = "FIELD",
+                    target = "Lnet/minecraft/client/Options;smoothCamera:Z",
+                    opcode = Opcodes.GETFIELD
+            )
+    )
+    private boolean useCinematicCamera(boolean original) {
+        return original || FreelookHandler.INSTANCE.useCinematicCamera();
+    }
+
+    @ModifyArg(
+            method = "tick",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/util/SmoothUtil;smooth(FF)F"
+            ),
+            index = 1
+    )
+    private float scaleCinematicSmoothing(float factor) {
+        return (float) FreelookHandler.INSTANCE.cinematicSmoothing(factor);
     }
 
 }

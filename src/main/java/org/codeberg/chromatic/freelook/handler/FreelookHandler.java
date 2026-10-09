@@ -133,6 +133,17 @@ public class FreelookHandler {
         return z * scale;
     }
 
+    public boolean useCinematicCamera() {
+        return freelookToggled && FreelookConfig.cinematicCamera > 0f;
+    }
+
+    public double cinematicSmoothing(double vanilla) {
+        if (!useCinematicCamera()) return vanilla;
+
+        double scaled = vanilla * 100.0 / FreelookConfig.cinematicCamera;
+        return Math.max(vanilla, Math.min(1.0, scaled));
+    }
+
     //? if 1.8.9 {
     /*public float cameraYaw(Entity entity, float vanilla) {
         return freelookToggled && entity instanceof CameraStateTracker tracker ? tracker.freelook$getYaw() : vanilla;
@@ -144,7 +155,7 @@ public class FreelookHandler {
     *///?}
 
     public static float calculateCameraRotation(float currentValue, double delta, boolean invert, boolean lock) {
-        delta = (delta * 0.15F * (invert ? -1 : 1));
+        delta = (delta * 0.15F * (FreelookConfig.sensitivity / 100.0F) * (invert ? -1 : 1));
         float rotation = currentValue + (float) delta;
         return lock ? Mth.clamp(rotation, -90.0F, 90.0F) : rotation;
     }
