@@ -29,7 +29,7 @@ public class FreelookHandler {
         boolean pressed = keyDown && !wasKeyDown;
         wasKeyDown = keyDown;
 
-        if (!enabledServer || HypixelUtils.isHypixel()) {
+        if (!FreelookConfig.enabled || !enabledServer || HypixelUtils.isHypixel()) {
             stop();
             return;
         }

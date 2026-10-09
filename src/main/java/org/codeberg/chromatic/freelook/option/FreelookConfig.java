@@ -19,6 +19,11 @@ import java.util.stream.Stream;
 public class FreelookConfig extends Config {
     public static final FreelookConfig INSTANCE = new FreelookConfig();
 
+    @Switch(
+            title = "Enabled"
+    )
+    public static boolean enabled = true;
+
     @Keybind(
             title = "Activate Freelook"
     )

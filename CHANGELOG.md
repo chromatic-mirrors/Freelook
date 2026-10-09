@@ -1,4 +1,2 @@
-## 2.3.0
-- Added a sensitivity slider
-- Added a cinematic camera slider
-- Fix players getting kicked from Shotbow
+## 2.3.1
+- Added an "Enabled" switch to turn Freelook off entirely
