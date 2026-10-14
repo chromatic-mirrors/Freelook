@@ -1,2 +1,2 @@
-## 2.3.1
-- Added an "Enabled" switch to turn Freelook off entirely
+## 2.3.2
+- Added "Exit Freelook" option to Cycle Change action.

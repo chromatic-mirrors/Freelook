@@ -62,6 +62,7 @@ public class FreelookHandler {
                 CameraController.restore(perspective);
             }
             case 2 -> CameraController.restore(CameraController.activePerspective);
+            case 3 -> stop();
         }
     }
 

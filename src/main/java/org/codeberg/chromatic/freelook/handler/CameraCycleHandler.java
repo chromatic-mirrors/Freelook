@@ -21,6 +21,12 @@ public class CameraCycleHandler {
                     return false;
                 }
                 break;
+            case 3:
+                if (freelook) {
+                    FreelookHandler.INSTANCE.stop();
+                    return false;
+                }
+                break;
         }
 
         return true;

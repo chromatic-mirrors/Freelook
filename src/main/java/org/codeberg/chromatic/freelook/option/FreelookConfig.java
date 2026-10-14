@@ -57,7 +57,7 @@ public class FreelookConfig extends Config {
 
     @Dropdown(
             title = "On Cycle Change",
-            options = { "Cycle and Freelook", "Stop Freelook", "Block Camera Cycle" }
+            options = { "Cycle and Freelook", "Stop Freelook", "Block Camera Cycle", "Exit Freelook" }
     )
     public static int onCycleChange = 1;
 
