@@ -17,8 +17,6 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class FreelookConfig extends Config {
-    public static final FreelookConfig INSTANCE = new FreelookConfig();
-
     @Switch(
             title = "Enabled"
     )
@@ -108,6 +106,8 @@ public class FreelookConfig extends Config {
         )
         public static boolean invert = false;
     }
+
+    public static final FreelookConfig INSTANCE = new FreelookConfig();
 
     public void migrateVanillaKeybind() {
         if (migratedVanillaKeybind) return;
