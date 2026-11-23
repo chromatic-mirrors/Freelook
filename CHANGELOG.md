@@ -1,2 +1,2 @@
-## 2.3.3
-- Fixed configs not saving sometimes
+## 2.3.4
+- Fixed kicks on several servers
