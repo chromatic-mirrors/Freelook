@@ -92,14 +92,14 @@ public class Freelook implements ClientModInitializer {
         FreelookConfig.INSTANCE.migrateDefaults();
     }
 
-    // Shotbow allows freelook but kicks anyone who sends a payload it doesn't recognise.
+    // These servers can kick clients that send the freelook handshake.
     private static boolean rejectsHandshake(String address) {
         String host = address.toLowerCase(Locale.ROOT);
         int port = host.lastIndexOf(':');
         if (port != -1) host = host.substring(0, port);
         if (host.endsWith(".")) host = host.substring(0, host.length() - 1);
 
-        for (String domain : new String[]{"shotbow.com", "shotbow.net"}) {
+        for (String domain : new String[]{"shotbow.com", "shotbow.net", "cavepvp.com"}) {
             if (host.equals(domain) || host.endsWith("." + domain)) return true;
         }
         return false;
