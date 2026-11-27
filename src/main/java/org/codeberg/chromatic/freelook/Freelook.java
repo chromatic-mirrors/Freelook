@@ -99,7 +99,7 @@ public class Freelook implements ClientModInitializer {
         if (port != -1) host = host.substring(0, port);
         if (host.endsWith(".")) host = host.substring(0, host.length() - 1);
 
-        for (String domain : new String[]{"shotbow.com", "shotbow.net", "cavepvp.com", "elevatemc.com", "pvprivals.net"}) {
+        for (String domain : new String[]{"shotbow.com", "shotbow.net", "cavepvp.com", "elevatemc.com", "pvprivals.net", "mc.lampnetwork.xyz"}) {
             if (host.equals(domain) || host.endsWith("." + domain)) return true;
         }
         return false;
